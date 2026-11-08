@@ -174,31 +174,275 @@ canvas{display:block;position:fixed;inset:0;width:100%;height:100%;touch-action:
 
 #onlineLaunch{grid-column:1/-1;background:#8e9295;border:2px solid #cbd0d3;color:#17191b;font:900 clamp(18px,2.5vw,27px) Arial,sans-serif;letter-spacing:.12em;min-height:52px;cursor:pointer;border-radius:0}
 #onlineLaunch:active{filter:brightness(1.2)}
+
+/* WHITEOUT 4.2 / DESIGN SYSTEM. Presentational overrides only. */
+:root{--w42-ink:#0b0f13;--w42-panel:#191f25;--w42-card:#252c33;--w42-border:#505d69;--w42-fg:#f0f4f6;--w42-muted:#a3b0b9;--w42-ice:#b9d7e1}
+button{transition:background-color .12s,border-color .12s,transform .12s,box-shadow .12s,color .12s}
+button:focus-visible{outline:2px solid #eaf8ff!important;outline-offset:2px}
+#homeDeck{width:min(61vw,690px);gap:10px;grid-template-rows:auto auto auto auto}
+#homeIdentity{grid-column:1/-1;color:var(--w42-fg);padding:0 3px 11px;display:flex;flex-direction:column;align-items:flex-start;position:relative}
+.identityKicker{display:flex;gap:9px;align-items:center;color:#bdc8d0;font:900 clamp(9px,1.05vw,12px)/1.2 Arial,sans-serif;letter-spacing:.19em}
+.liveSquare{display:inline-block;flex:0 0 7px;width:7px;height:7px;background:#cfe4ec;box-shadow:0 0 10px #b9d7e1a0}
+.identityVersion{color:#7f8c96;letter-spacing:.08em;font-size:10px;border-left:1px solid #54616d;padding-left:10px}
+#homeIdentity>strong{font:900 clamp(43px,7.3vw,91px)/.96 Impact,'Arial Narrow',Arial,sans-serif;letter-spacing:.015em;color:#f4f6f7;margin-top:4px;white-space:nowrap;text-shadow:0 5px 26px #0008}
+#homeIdentity>strong span{color:#b9c3ca}#homeIdentity>strong i{font-style:normal;color:#9cc0d0}
+.identityFooter{width:100%;display:flex;justify-content:space-between;gap:8px;border-top:1px solid #66727a;padding-top:9px;margin-top:10px;font:800 clamp(8px,1vw,11px)/1.2 Arial,sans-serif;letter-spacing:.11em;color:#acb9c1}
+#homeDeck #shopPreview,#homeDeck #skinTile{min-height:168px;background:linear-gradient(154deg,#242a30f2,#12171bf5);border:1px solid #64717c;box-shadow:7px 7px 0 #06080999;position:relative;overflow:hidden}
+#homeDeck #shopPreview:before,#homeDeck #skinTile:before{content:'';position:absolute;top:0;left:0;width:42%;height:3px;background:#d3e1e9}
+#homeDeck .shopTitle{font-size:clamp(17px,2vw,22px);letter-spacing:.075em;margin-bottom:10px;color:#f4f7f9;align-items:flex-start}
+#homeDeck .shopTitle>span:first-child small{display:block;font:800 9px Arial,sans-serif;letter-spacing:.17em;color:#94a4ae;margin-top:5px}
+#homeDeck .shopCoins{padding:5px 7px;background:#343c44;color:#fff;font-weight:900;border:1px solid #687581}
+#homeDeck .previewSlot,.skinMini{background:#2a3239;border-left-color:#a5b9c4}
+#homeDeck .previewSlot small{font-size:9px;color:#acbcc7}
+#homeDeck .previewSlot strong,#homeDeck .skinMini strong{color:#f4f8fa}
+#homeDeck #openShop,#homeDeck #openSkins{background:#e1e7e9;border:1px solid #fff;min-height:43px;color:#101518;font-size:11px;letter-spacing:.08em}
+#homeDeck #openShop:hover,#homeDeck #openSkins:hover{background:#fff}
+#homeDeck #play,#homeDeck #duelLaunch{height:clamp(78px,11vh,101px);box-shadow:7px 7px 0 #070b0dc9;display:flex;flex-direction:column;justify-content:center;align-items:flex-start;text-align:left;padding:13px 20px;position:relative;font-family:Impact,'Arial Narrow',Arial,sans-serif;font-size:clamp(29px,4vw,49px);letter-spacing:.03em}
+#homeDeck #play{background:#e4edf0;border:2px solid #fff;color:#141b20}
+#homeDeck #duelLaunch{background:#a6b6c0;border:2px solid #d7e4eb;color:#141b20}
+#homeDeck #play:hover{background:#f8fdff;transform:translateY(-2px)}
+#homeDeck #duelLaunch:hover{background:#c5d5df;transform:translateY(-2px)}
+.actionNum{font:900 10px Arial,sans-serif;letter-spacing:.20em;opacity:.66;margin-bottom:6px}
+.actionArrow{position:absolute;right:15px;bottom:12px;font:900 28px Arial,sans-serif}
+#homeDeck #onlineLaunch{min-height:69px;display:flex;justify-content:space-between;align-items:center;gap:16px;padding:11px 20px;text-align:left;background:#222b32;color:#f5f7f8;border:1px solid #bacbd4;box-shadow:7px 7px 0 #050708aa;font-family:Arial,sans-serif}
+#homeDeck #onlineLaunch:hover{background:#303d47;border-color:#f5faff;transform:translateY(-2px)}
+.onlineActionLeading{display:flex;flex-direction:column;gap:4px}
+.onlineActionLeading small{font:800 10px Arial,sans-serif;color:#aabfc8;letter-spacing:.15em}
+.onlineActionLeading strong{font:900 clamp(19px,2.4vw,30px) Impact,'Arial Narrow',Arial,sans-serif;letter-spacing:.04em}
+.onlineActionTrailing{font:900 10px/1.5 Arial,sans-serif;letter-spacing:.09em;color:#c3d3db;text-align:right}
+.onlineActionTrailing span{font-size:25px;display:block;color:#fff}
+#modePanel{background:linear-gradient(175deg,#1e252ade,#14191de8);border:1px solid #53616b;padding:12px;box-shadow:5px 5px 0 #090c0eb5}
+.modeTitle{display:flex;align-items:center;justify-content:space-between;gap:4px;color:#e8f0f4;font-size:11px}
+.modeTitle small{font:700 8px Arial,sans-serif;letter-spacing:.08em;color:#81949e}
+.modeChoice{background:#222b30;border:1px solid #5a6873;color:#cbd5da;min-height:40px}
+.modeChoice[aria-pressed=true]{background:#d3e0e7;border-color:#f2f8fb;color:#121b20;box-shadow:inset 0 -3px 0 #8a9fac}
+.modeChoice:hover{border-color:#d6e7f0}
+#dailyCard{background:#222a30;border-color:#61707a;color:#f4f7f9;position:relative}
+#dailyCard:after{content:'↗';position:absolute;right:10px;top:10px;color:#c8dce7}
+#menuSettings,#loginStreak{background:#1c252bcf;border-color:#6b7b86;color:#eff5f8;min-width:145px;text-align:center}
+#menuSettings:hover,#loginStreak:hover{background:#35424a}
+#gameInfo{background:#161e24de;border:1px solid #65747c;border-left:3px solid #e0eaf0;padding:12px 15px;min-width:172px;font-size:18px;box-shadow:6px 6px 0 #0507084d}
+#playerHealth{height:8px;width:100%;margin-top:10px;background:#34424b}
+#playerHealthFill{background:#d9eef4}
+#modeLabel{font-size:10px;margin-top:6px;color:#bbc8d0}
+#pauseBtn{background:#1e282e;border-color:#7f929e;font-size:19px}
+#arrowSelector{background:#131c21e6;border:1px solid #5c6973;padding:6px;gap:6px;box-shadow:4px 4px 0 #03060788}
+.arrowChoice{background:#27323a;border-color:#526571;color:#d5e3ea;min-height:42px}
+.arrowChoice[aria-pressed=true]{background:#e6f1f4;color:#10181c}
+#shopDialog,#skinsDialog,.homeDialog,.overlayBox{border-color:#93a5ae!important;background:#1c252b!important;box-shadow:14px 14px 0 #02050790!important}
+.dialogHeader,.skinHeader,.homeDialogTitle{background:#29353d;border-bottom-color:#61717a}
+#shopItems,#skinsGrid{background:#131a1f}
+.shopItem,.skinCard{background:#222c33;border-color:#5c6a73}
+.shopItem.selected,.skinCard.selected{background:#34434c;border-color:#d5e3eb}
+.shopBuy,#equipSkin,#claimStreak,.flatBtn{background:#e1e9ed;color:#192228}
+#pauseOverlay,#resultOverlay,#shopOverlay,#settingsOverlay,#streakOverlay,#skinsOverlay{backdrop-filter:blur(6px)}
+/* Keep every UI panel within the available phone/landscape area. */
+@media(max-width:760px){#homeDeck{width:min(64vw,660px)}#homeIdentity>strong{font-size:clamp(41px,7vw,67px)}#homeDeck #shopPreview,#homeDeck #skinTile{min-height:155px}}
+@media(max-width:600px){#homeDeck{width:min(95vw,445px);gap:6px;bottom:max(9px,env(safe-area-inset-bottom))}#homeIdentity{padding:0 2px 5px}#homeIdentity>strong{font-size:clamp(44px,12vw,70px)}.identityKicker{font-size:8px}.identityFooter{font-size:8px;margin-top:5px;padding-top:6px}#homeDeck #shopPreview,#homeDeck #skinTile{padding:8px;min-height:136px}#homeDeck .shopTitle{font-size:15px;margin-bottom:5px}#homeDeck .previewSlot{margin:2px 0;padding:5px}#homeDeck #openShop,#homeDeck #openSkins{height:33px;min-height:33px;font-size:9px}#homeDeck #play,#homeDeck #duelLaunch{height:65px;font-size:29px;padding:8px 10px}.actionNum{font-size:8px;margin-bottom:3px}.actionArrow{right:8px;bottom:8px;font-size:22px}#homeDeck #onlineLaunch{min-height:51px;padding:7px 10px}.onlineActionLeading strong{font-size:21px}.onlineActionLeading small{font-size:8px}.onlineActionTrailing{font-size:8px}.onlineActionTrailing span{font-size:17px}#modePanel{right:10px;padding:7px;width:min(56vw,220px)}.modeTitle{font-size:8px}.modeTitle small{font-size:6px}.modeChoice{min-height:34px;height:34px;font-size:8px}#dailyCard{padding:6px;margin-top:5px}#dailyText{font-size:9px}#menuSettings,#loginStreak{min-width:118px;font-size:9px}#gameInfo{font-size:14px;min-width:130px;padding:8px}#arrowSelector{max-width:80vw}}
+@media(max-height:580px){#homeDeck{width:min(58vw,690px);gap:4px;bottom:6px}#homeIdentity{padding-bottom:2px}#homeIdentity>strong{font-size:clamp(35px,6vw,53px);margin-top:1px}.identityKicker{font-size:8px}.identityFooter{padding-top:4px;margin-top:4px;font-size:7px}#homeDeck #shopPreview,#homeDeck #skinTile{padding:5px 8px;min-height:107px}#homeDeck .shopTitle{font-size:13px;margin-bottom:2px}#homeDeck .previewSlot{padding:4px;margin:1px 0}#homeDeck #openShop,#homeDeck #openSkins{height:27px;min-height:27px;font-size:9px}#homeDeck #play,#homeDeck #duelLaunch{height:48px;font-size:24px;padding:6px 10px}.actionNum{font-size:7px;margin-bottom:1px}.actionArrow{font-size:18px}#homeDeck #onlineLaunch{min-height:40px;padding:4px 10px}.onlineActionLeading strong{font-size:19px}.onlineActionLeading small{font-size:7px}.onlineActionTrailing{font-size:7px}.onlineActionTrailing span{font-size:14px}#modePanel{padding:5px}#dailyCard{padding:4px}#menuSettings,#loginStreak{min-width:105px}#loginStreak{top:44px}}
+@media(max-width:430px) and (min-height:700px){#homeIdentity>strong{font-size:clamp(43px,12vw,54px)}#homeDeck #shopPreview,#homeDeck #skinTile{min-height:124px}#homeDeck #play,#homeDeck #duelLaunch{height:59px}}
+
+@media(max-width:600px){#homeIdentity{background:linear-gradient(90deg,#172027de,#19232ac2);border-left:2px solid #a6c6d3;padding:7px 8px;box-shadow:0 5px 18px #0004}}
+@media(min-width:601px) and (max-width:1120px){.identityVersion{display:none}}
+
+/* WHITEOUT 4.3 | COLOUR / designed, not decorated.
+   Burnt amber = solo/actions, tide blue = multiplayer, coral = HP,
+   pale gold = rewards, restrained elemental accents. No new layout logic. */
+:root{
+ --ui-bg:#151b20;--ui-surface:#202a30;--ui-raise:#29373d;
+ --ui-line:#53676f;--ui-text:#f2f2ec;--ui-dim:#aabac0;
+ --ui-amber:#efad65;--ui-amber-hi:#ffc68a;--ui-tide:#76bfbe;
+ --ui-blue:#9fc5d4;--ui-coral:#da8178;--ui-mint:#9cc7a3;
+ --ui-gold:#e4c27b;
+}
+html,body{background:var(--ui-bg)}
+button:focus-visible{outline:2px solid var(--ui-amber-hi)!important;outline-offset:3px}
+#homeIdentity .identityKicker{color:#c0cbc8}
+#homeIdentity .liveSquare{background:var(--ui-tide);box-shadow:none}
+#homeIdentity>strong span{color:#d4dedb}
+#homeIdentity>strong i{color:var(--ui-amber);text-shadow:none}
+#homeIdentity .identityVersion{color:#9ba9ab;border-color:#57656b}
+#homeIdentity .identityFooter{border-top-color:#6b797b;color:#adbbbe}
+/* One meaningful accent per action. Clear priorities, not a rainbow. */
+#homeDeck #play{background:var(--ui-amber);border:2px solid var(--ui-amber-hi);color:#20201f;box-shadow:6px 6px 0 #070b0cb5}
+#homeDeck #play:hover{background:var(--ui-amber-hi)}
+#homeDeck #duelLaunch{background:#92bbc7;border:2px solid #c0dbe2;color:#172b31;box-shadow:6px 6px 0 #070b0cb5}
+#homeDeck #duelLaunch:hover{background:#b2d5de}
+#homeDeck #onlineLaunch{background:#1f4246;color:#e7f5f0;border:1px solid var(--ui-tide);border-left:5px solid var(--ui-tide);box-shadow:6px 6px 0 #070b0cb5}
+#homeDeck #onlineLaunch:hover{background:#29575a;border-color:#a0dfda}
+#homeDeck #onlineLaunch .onlineActionLeading small{color:#9bd6d1}
+#homeDeck #onlineLaunch .onlineActionTrailing{color:#b8d9d8}
+#homeDeck #onlineLaunch .onlineActionTrailing span{color:var(--ui-amber)}
+#homeDeck #shopPreview,#homeDeck #skinTile{background:#1e292f;border-color:#5c727a;box-shadow:6px 6px 0 #06080999}
+#homeDeck #shopPreview:before{background:var(--ui-amber);width:30%;height:4px}
+#homeDeck #skinTile:before{background:var(--ui-tide);width:30%;height:4px}
+#homeDeck .shopTitle{color:#f0f3ee}
+#homeDeck .shopTitle small{color:#a8bcc0}
+#homeDeck .shopCoins{background:#334048;color:var(--ui-gold);border:1px solid #5c727a}
+.coinMark{background:var(--ui-gold)}
+#homeDeck .previewSlot{background:#2b373d;border-left:3px solid #d5a16b}
+#homeDeck #skinTile .skinMini{background:#2b373d;border-left-color:var(--ui-tide)}
+#homeDeck #openShop{background:#3b3430;border:1px solid #bd895c;color:#f6cd9f}
+#homeDeck #openSkins{background:#244044;border:1px solid #69a8a9;color:#d0eae7}
+#homeDeck #openShop:hover{background:#4d3e31;color:#fff1dd}
+#homeDeck #openSkins:hover{background:#2d5255;color:#f3fffc}
+#modePanel{background:#1e292eea;border-color:#61787e;box-shadow:5px 5px 0 #080c0eb3}
+.modeTitle{color:#e6edeb}.modeTitle small{color:#9dadb0}
+.modeChoice{background:#29343b;border:1px solid #63757b;color:#c7d2d2}
+.modeChoice[aria-pressed=true]{background:var(--ui-amber);color:#252320;border-color:var(--ui-amber-hi);box-shadow:inset 0 -3px 0 #b87643}
+.modeChoice:hover{border-color:var(--ui-amber-hi)}
+#dailyCard{background:#303128;border-color:#91805c;border-left:4px solid var(--ui-gold)}
+#dailyCard:after{color:var(--ui-gold)}
+#dailyStatus{color:var(--ui-gold)!important}
+#menuSettings,#loginStreak{background:#243137e8;border-color:#71858a;color:#e2edeb}
+#menuSettings:hover,#loginStreak:hover{background:#36494d}
+#gameInfo{background:#19252ce8;border-left:4px solid var(--ui-amber);border-color:#5e7479 #5e7479 #5e7479 var(--ui-amber)}
+#playerHealth{background:#402e32}
+#playerHealthFill{background:var(--ui-coral)}
+.duelSide:first-child .duelHP>div{background:var(--ui-amber)}
+.duelSide.right .duelHP>div{background:var(--ui-tide)}
+#arrowSelector{background:#17232be8;border-color:#526d75}
+.arrowChoice{background:#2d3941;border:1px solid #627a81;color:#d1e2e2;position:relative}
+.arrowChoice[data-arrow="lightning"]{border-bottom:3px solid #80c8e3}
+.arrowChoice[data-arrow="flame"]{border-bottom:3px solid #f0a36b}
+.arrowChoice[data-arrow="acid"]{border-bottom:3px solid #badb7b}
+.arrowChoice[data-arrow="poison"]{border-bottom:3px solid #bba2db}
+.arrowChoice[data-arrow="frost"]{border-bottom:3px solid #a8d6dc}
+.arrowChoice[data-arrow="piercer"]{border-bottom:3px solid #d3dadb}
+.arrowChoice[aria-pressed=true]{background:#e8e6da;color:#21282a;border-color:#f5e4ba;box-shadow:inset 0 -3px 0 #c5a275}
+#shopDialog,#skinsDialog,.homeDialog,.overlayBox{border-color:#829ba0!important;background:#202a31!important;box-shadow:11px 11px 0 #0507079c!important}
+.dialogHeader,.skinHeader,.homeDialogTitle{background:#2b3940;border-bottom-color:#536e76}
+#shopItems,#skinsGrid{background:#141e24}
+.shopItem,.skinCard{background:#28343a;border-color:#5f737a}
+.shopItem.selected,.skinCard.selected{background:#314546;border-color:var(--ui-tide)}
+.shopTab{background:#27363b;border-color:#536a71;color:#d0e2e0}
+.shopTab[aria-selected="true"]{background:var(--ui-amber);color:#242321;border-bottom:3px solid #bd7a49}
+.shopBuy,#equipSkin,#claimStreak,.flatBtn{background:var(--ui-amber);color:#262624;border-color:var(--ui-amber-hi)}
+.shopBuy[disabled],#claimStreak:disabled{background:#57646a;color:#d6dada;border-color:#68777b}
+.shopItem[data-effect="lightning"] .itemPreview{border-bottom:3px solid #80c8e3}
+.shopItem[data-effect="flame"] .itemPreview{border-bottom:3px solid #f0a36b}
+.shopItem[data-effect="acid"] .itemPreview{border-bottom:3px solid #badb7b}
+.shopItem[data-effect="poison"] .itemPreview{border-bottom:3px solid #bba2db}
+.shopItem[data-effect="frost"] .itemPreview{border-bottom:3px solid #a8d6dc}
+.streakCell.today{border-color:var(--ui-gold);background:#484237}
+.streakCell.done{background:#2d4941}
+.skinPlayer[aria-pressed="true"],.skinPlayer[aria-selected="true"]{background:var(--ui-tide);color:#14272b}
+#resultRank{color:var(--ui-gold)}
+#resultCoins{color:var(--ui-gold)}
+#bonusToast{color:#ffe2ac}
+#pauseBtn{border-color:#a5c2c3;background:#273a3d}
+#syncSplash{background:#151b20!important;color:var(--ui-text)!important}
+#syncSplash span{color:var(--ui-tide)!important}
+@media(prefers-reduced-motion:reduce){button{transition:none!important}}
+
+
+/* WHITEOUT 4.4 / CLEAN UI: only high-priority labels and real controls.
+   Everything below is presentational. Data, controls and save hooks stay intact. */
+#homeIdentity .identityKicker,#homeIdentity .identityFooter,
+#homeDeck #shopPreview>:not(#openShop),#homeDeck #skinTile>:not(#openSkins),
+#homeDeck #shopPreview::before,#homeDeck #skinTile::before,
+#modePanel .modeTitle,#dailyText,#dailyStatus,
+#pauseSubtitle,#resultSub,#resultChallenge,#resultRank,
+.shopFooter,.itemDesc,#skinsDialog .skinHeader small,
+.skinLive>span,#skinHint,.menuNote,#duelHUD .duelSide small,
+#modeLabel{display:none!important}
+#homeIdentity{padding:0 2px 10px!important}
+#homeIdentity>strong{margin:0!important;letter-spacing:.015em}
+#homeDeck{gap:11px!important;grid-template-rows:auto auto auto auto!important}
+#homeDeck #shopPreview,#homeDeck #skinTile{
+ min-height:0!important;height:auto!important;padding:0!important;margin:0!important;
+ border:0!important;background:transparent!important;box-shadow:none!important;overflow:visible!important
+}
+#homeDeck #openShop,#homeDeck #openSkins{
+ display:flex;align-items:center;justify-content:space-between;text-align:left;
+ width:100%;min-height:64px!important;height:64px!important;margin:0!important;padding:0 18px!important;
+ font:900 clamp(16px,2vw,23px) Impact,'Arial Narrow',Arial,sans-serif!important;
+ letter-spacing:.06em!important;border-width:2px!important;box-shadow:6px 6px 0 #050708bb;
+ background:#2d3b40!important;color:#e9f4f2!important;border-color:#7c9a9c!important;
+}
+#homeDeck #openSkins{background:#2b3039!important;border-color:#8c97a7!important}
+#homeDeck #openShop:hover,#homeDeck #openSkins:hover{filter:brightness(1.16)}
+#homeDeck #play,#homeDeck #duelLaunch{justify-content:center!important;min-height:84px}
+#homeDeck #onlineLaunch{min-height:72px!important}
+#homeDeck #onlineLaunch .onlineActionLeading{gap:0}
+#homeDeck #onlineLaunch .onlineActionLeading strong{font-size:clamp(23px,2.6vw,35px)}
+#homeDeck #onlineLaunch .onlineActionTrailing{font-size:0!important}
+#homeDeck #onlineLaunch .onlineActionTrailing span{display:block;font-size:28px!important}
+#modePanel{background:#171f24ed!important;padding:10px!important}
+#modePanel .modeButtons{grid-template-columns:repeat(3,minmax(0,1fr))!important;gap:5px!important}
+#modePanel .modeChoice{height:48px!important;min-height:48px!important;font:900 clamp(10px,1vw,13px) Arial,sans-serif!important;letter-spacing:.025em!important}
+#dailyCard{min-height:50px!important;padding:10px 12px!important;text-align:center!important}
+#dailyCard strong{font:900 14px Arial,sans-serif!important;letter-spacing:.04em!important}
+#dailyCard::after{right:8px!important;top:50%!important;transform:translateY(-50%)}
+#menuSettings,#loginStreak{font-size:12px!important;min-height:43px!important}
+#shopItems .shopItem{min-height:190px!important;gap:10px!important}
+#shopItems .itemName{font-size:clamp(13px,1.5vw,17px)!important}
+#shopItems .shopBuy{min-height:48px!important;font-size:13px!important}
+#shopDialog .shopTabs .shopTab{font-size:13px!important}
+#skinsDialog .skinFooter{justify-content:flex-end!important}
+#skinsDialog #equipSkin{font-size:14px!important;min-height:47px!important}
+#skinCurrent{font-size:15px!important}
+#gameInfo{min-width:140px!important}
+#gameInfo #playerHealth{margin-top:8px!important}
+#resultOverlay .resultGrid{margin:12px 0}
+@media(max-width:600px){
+ #homeDeck{gap:7px!important}
+ #homeDeck #shopPreview,#homeDeck #skinTile{min-height:0!important;height:auto!important;padding:0!important}
+ #homeDeck #openShop,#homeDeck #openSkins{min-height:46px!important;height:46px!important;font-size:18px!important;padding:0 12px!important}
+ #homeDeck #play,#homeDeck #duelLaunch{min-height:67px!important;height:67px!important;font-size:32px!important}
+ #homeDeck #onlineLaunch{min-height:55px!important}
+ #homeDeck #onlineLaunch .onlineActionLeading strong{font-size:23px!important}
+ #modePanel{padding:6px!important}
+ #modePanel .modeButtons{gap:3px!important}
+ #modePanel .modeChoice{min-height:37px!important;height:37px!important;font-size:9px!important}
+ #dailyCard{min-height:38px!important;margin-top:4px!important;padding:6px!important}
+ #dailyCard strong{font-size:10px!important}
+ #menuSettings,#loginStreak{font-size:11px!important}
+ #shopItems .shopItem{min-height:0!important;grid-template-columns:65px 1fr 106px!important}
+ #shopItems .itemPreview{height:55px!important}
+}
+@media(max-height:580px){
+ #homeDeck{gap:5px!important}
+ #homeIdentity{padding-bottom:3px!important}
+ #homeDeck #openShop,#homeDeck #openSkins{min-height:37px!important;height:37px!important;font-size:14px!important}
+ #homeDeck #play,#homeDeck #duelLaunch{min-height:46px!important;height:46px!important;font-size:25px!important}
+ #homeDeck #onlineLaunch{min-height:40px!important}
+ #modePanel .modeChoice{min-height:30px!important;height:30px!important;font-size:9px!important}
+ #dailyCard{min-height:29px!important}
+ #menuSettings,#loginStreak{min-height:31px!important}
+}
+
 </style>
 </head>
 <body>
+<div id="syncSplash" role="status" aria-live="polite" style="position:fixed;inset:0;z-index:99;display:flex;flex-direction:column;gap:12px;align-items:center;justify-content:center;background:#181a1d;color:#e9e9e9;font:900 clamp(24px,4vw,40px) Arial,sans-serif;letter-spacing:.16em">WHITEOUT<span style="font:700 11px Arial,sans-serif;letter-spacing:.18em;color:#aeb5b8">CHECKING SAVED PROGRESS…</span></div>
 <canvas id="game" aria-label="Archery game. Drag opposite the desired firing direction and release. Your character stands still. Enemy shoots back."></canvas>
 <div id="homeDeck" aria-label="WHITEOUT main actions">
-  <section id="shopPreview" aria-label="Shop and equipped weapons">
-   <div class="shopTitle"><span>SHOP</span><span class="shopCoins"><i class="coinMark"></i><span id="coinsTop">0</span></span></div>
+  <div id="homeIdentity" aria-label="STILLSHOT WHITEOUT">
+    <span class="identityKicker"><b class="liveSquare"></b> STILLSHOT / ARCADE ARCHERY <span class="identityVersion">V4.3 COLOR</span></span>
+    <strong>WHITE<span>OUT</span><i>.</i></strong>
+    <div class="identityFooter"><span>NO MOVEMENT. JUST PRECISION.</span><span>SOLO // LOCAL // ONLINE</span></div>
+  </div>
+  <section id="shopPreview" aria-label="Shop and equipped weapons"><div data-whiteout-save-status style="font:700 10px Arial,sans-serif;color:#b3d5c5;letter-spacing:.06em;margin-bottom:4px">LOADING SAVE…</div>
+   <div class="shopTitle"><span>ARMORY <small>01 / GEAR</small></span><span class="shopCoins"><i class="coinMark"></i><span id="coinsTop">0</span></span></div>
    <div class="previewSlot"><small>BOW</small><strong id="equippedBow">ASH</strong></div>
    <div class="previewSlot"><small>ARROW</small><strong id="equippedArrow">STANDARD</strong></div>
-   <button id="openShop" type="button">OPEN SHOP</button>
+   <button id="openShop" type="button">ARMORY ↗</button>
   </section>
   <section id="skinTile" aria-label="Character skin collection">
-   <div class="shopTitle"><span>SKINS</span><span class="shopCoins" id="skinOwnedTop">1 / 15</span></div>
+   <div class="shopTitle"><span>OPERATORS <small>02 / STYLE</small></span><span class="shopCoins" id="skinOwnedTop">1 / 15</span></div>
    <div class="skinMini"><div id="skinMini1"></div><span>P1<br><strong id="skinName1">WHITEOUT</strong></span></div>
    <div class="skinMini"><div id="skinMini2"></div><span>P2<br><strong id="skinName2">OBSIDIAN</strong></span></div>
-   <button id="openSkins" type="button">CHOOSE SKINS</button>
+   <button id="openSkins" type="button">SKINS ↗</button>
   </section>
-  <button id="play" type="button" aria-label="Play single player">PLAY</button>
-  <button id="duelLaunch" type="button" aria-label="Play local one versus one">1V1</button>
-  <button id="onlineLaunch" type="button" aria-label="Play online one versus one">ONLINE 1V1 · ROOM / QUICK MATCH</button>
+  <button id="play" type="button" aria-label="Play single player">PLAY <span class="actionArrow">↗</span></button>
+  <button id="duelLaunch" type="button" aria-label="Play local one versus one">1V1 <span class="actionArrow">↗</span></button>
+  <button id="onlineLaunch" type="button" aria-label="Play online one versus one"><span class="onlineActionLeading"><strong>ONLINE 1V1</strong></span><span class="onlineActionTrailing"><span aria-hidden="true">↗</span></span></button>
 </div>
 <button id="menuSettings" type="button" class="menuCorner" aria-label="Open menu settings">⚙ SETTINGS</button>
 <button id="loginStreak" type="button" class="menuCorner" aria-label="Open seven day login streak">▣ STREAK · DAY 1</button>
 <aside id="modePanel" aria-label="Game modes and daily challenge">
- <div class="modeTitle">GAME MODE</div><div class="modeButtons">
+ <div class="modeTitle"><span>01 / SELECT MODE</span><small>SOLO CAMPAIGN</small></div><div class="modeButtons">
   <button type="button" class="modeChoice" data-mode="classic" aria-pressed="true">CLASSIC</button>
   <button type="button" class="modeChoice" data-mode="endless" aria-pressed="false">ENDLESS</button>
   <button type="button" class="modeChoice" data-mode="bossrush" aria-pressed="false">BOSS RUSH</button>
@@ -262,8 +506,30 @@ canvas{display:block;position:fixed;inset:0;width:100%;height:100%;touch-action:
 <div class="resultStat"><small>COINS EARNED</small><strong id="resultCoins">0</strong></div></div>
 <p id="resultChallenge">Challenge result</p><div class="overlayActions"><button class="flatBtn" id="resultReplay">REPLAY</button><button class="flatBtn dark" id="resultHome">HOME</button></div>
 </section></div>
+<script src="cloud-save.js"></script>
 <script>
-(()=>{'use strict';
+(async()=>{'use strict';
+await window.WHITEOUT_SAVE.ready;
+window.WHITEOUT_SAVE.updateIndicators();
+// If CrazyGames starts WHITEOUT from a friend's invite (or the instant
+// multiplayer entry), skip Classic's home menu and enter the online room.
+const cgStart=window.WHITEOUT_SAVE.mode==='cloud'?window.CrazyGames?.SDK?.game:null;
+if(cgStart){
+  let code=cgStart.inviteParams?.room||cgStart.inviteParams?.roomId||'';
+  if(!code&&cgStart.getInviteParam)code=cgStart.getInviteParam('room')||'';
+  if(typeof code==='string'&&/^[A-HJ-NP-Z2-9]{6}$/.test(code.toUpperCase())){
+    window.location.replace('online.html?room='+encodeURIComponent(code.toUpperCase()));return;
+  }
+  if(cgStart.isInstantMultiplayer){window.location.replace('online.html?instant=1');return;}
+}
+let classicGameplay=false;
+function reportClassicGameplay(active){
+  const game=window.WHITEOUT_SAVE.mode==='cloud'?window.CrazyGames?.SDK?.game:null;
+  if(!game||classicGameplay===active)return;
+  try{if(active)game.gameplayStart?.();else game.gameplayStop?.();classicGameplay=active;}
+  catch(e){console.warn('[WHITEOUT] Gameplay SDK:',e);}
+}
+document.getElementById('syncSplash')?.remove();
 const cvs=document.querySelector('#game'),c=cvs.getContext('2d',{alpha:false,desynchronized:true}),playButton=document.querySelector('#play');
 const min=Math.min,max=Math.max,abs=Math.abs,hyp=Math.hypot,PI=Math.PI;
 const clamp=(n,a,b)=>min(b,max(a,n)),lerp=(a,b,t)=>a+(b-a)*t,ran=(a,b)=>a+Math.random()*(b-a);
@@ -349,7 +615,7 @@ const getBow=()=>BOWS.find(x=>x.id===save.equippedBow)||BOWS[0];
 const getArrow=()=>ARROWS.find(x=>x.id===save.equippedArrow)||ARROWS[0];
 function readSave(){
  const start={coins:0,ownedBows:['ash'],ownedArrows:['basic'],equippedBow:'ash',equippedArrow:'basic',upgrades:{health:0,draw:0,element:0,crit:0},medals:{},totalHeadshots:0,totalKills:0,wins:0,bestEndless:0,bestBossRush:0,ownedStyles:STYLES.filter(s=>s.price===0).map(s=>s.kind+':'+s.id),equippedStyle:{...STYLE_DEFAULT},daily:{date:'',progress:0,done:false},settings:{sound:true,slow:true,shake:true},p1Skin:'whiteout',p2Skin:'whiteout',ownedSkins:['whiteout'],streak:{lastClaim:'',count:0}};
- try{const stored=JSON.parse(localStorage.getItem('whiteout_save_v1')||'null');if(stored&&typeof stored==='object'){
+ try{const stored=JSON.parse(window.WHITEOUT_SAVE.getGame()||'null');if(stored&&typeof stored==='object'){
   start.coins=Number.isFinite(stored.coins)?clamp(Math.floor(stored.coins),0,1e9):0;
   start.ownedBows=BOWS.filter(x=>x.id==='ash'||Array.isArray(stored.ownedBows)&&stored.ownedBows.includes(x.id)).map(x=>x.id);
   const arrowIds=Array.isArray(stored.ownedArrows)?stored.ownedArrows.map(id=>id==='swift'?'lightning':id):[];
@@ -392,7 +658,7 @@ function dailyEvent(event){ensureDaily();const task=dailyTask();if(task.key!==ev
  if(save.daily.progress>=task.target){save.daily.done=true;save.coins+=20;showBonus('DAILY COMPLETED · +20');}
  persistSave();refreshMenu();}
 
-function persistSave(){try{localStorage.setItem('whiteout_save_v1',JSON.stringify(save));}catch(_){} }
+function persistSave(){window.WHITEOUT_SAVE.setGame(JSON.stringify(save));}
 const STREAK_REWARDS=[5,8,10,12,14,16,20];
 function dayNumber(str){if(!/^\d{4}-\d{2}-\d{2}$/.test(str||''))return null;const [y,m,d]=str.split('-').map(Number);return Date.UTC(y,m-1,d)/86400000;}
 function currentStreak(){
@@ -1030,12 +1296,12 @@ function updateFX(dt){
  sparks=sparks.filter(s=>s.life>0);
 }
 function returnToMenu(){
- mode='menu';document.getElementById('homeDeck').hidden=false;document.getElementById('menuSettings').hidden=false;document.getElementById('loginStreak').hidden=false;playButton.hidden=false;shopPreview.hidden=false;modePanel.hidden=false;arrowSelector.hidden=true;closeShop();closeSkins();pauseOverlay.hidden=true;resultOverlay.hidden=true;pauseBtn.hidden=true;hud.hidden=true;document.getElementById('duelHUD').hidden=true;document.getElementById('duelSplit').style.display='none';pauseBtn.classList.remove('duelPause');
+ reportClassicGameplay(false);mode='menu';document.getElementById('homeDeck').hidden=false;document.getElementById('menuSettings').hidden=false;document.getElementById('loginStreak').hidden=false;playButton.hidden=false;shopPreview.hidden=false;modePanel.hidden=false;arrowSelector.hidden=true;closeShop();closeSkins();pauseOverlay.hidden=true;resultOverlay.hidden=true;pauseBtn.hidden=true;hud.hidden=true;document.getElementById('duelHUD').hidden=true;document.getElementById('duelSplit').style.display='none';pauseBtn.classList.remove('duelPause');
  roundFinishAt=0;activeDrag=null;acc=0;finishing=false;headSlow=0;
  size();refreshMenu();
 }
 function startRound(){
- closeShop();closeSkins();settingsOverlay.hidden=true;streakOverlay.hidden=true;resultOverlay.hidden=true;pauseOverlay.hidden=true;
+ reportClassicGameplay(true);closeShop();closeSkins();settingsOverlay.hidden=true;streakOverlay.hidden=true;resultOverlay.hidden=true;pauseOverlay.hidden=true;
  mode='play';document.getElementById('homeDeck').hidden=true;document.getElementById('menuSettings').hidden=true;document.getElementById('loginStreak').hidden=true;playButton.hidden=true;shopPreview.hidden=true;modePanel.hidden=true;arrowSelector.hidden=runMode==='duel';pauseBtn.hidden=false;hud.hidden=runMode==='duel';document.getElementById('duelHUD').hidden=runMode!=='duel';document.getElementById('duelSplit').style.display=runMode==='duel'?'block':'none';
  pauseBtn.classList.toggle('duelPause',runMode==='duel');
  document.getElementById('pauseSubtitle').textContent=runMode==='duel'?'WHITEOUT / LOCAL TWO-PLAYER DUEL':'WHITEOUT / SINGLE PLAYER';
@@ -1045,7 +1311,7 @@ function startRound(){
  size();updateHUD();acc=0;frameT=0;
 }
 function endRound(kind){
- if(kind==='duel'){endDuel();return;}
+ reportClassicGameplay(false);if(kind==='duel'){endDuel();return;}
  finishing=false;roundFinishAt=0;mode='menu';
  document.getElementById('homeDeck').hidden=false;document.getElementById('menuSettings').hidden=false;document.getElementById('loginStreak').hidden=false;playButton.hidden=false;shopPreview.hidden=false;modePanel.hidden=false;arrowSelector.hidden=true;pauseBtn.hidden=true;hud.hidden=true;
  closeShop();closeSkins();pauseOverlay.hidden=true;activeDrag=null;acc=0;headSlow=0;
@@ -1345,7 +1611,7 @@ function duelRelease(id){
  ctl.charge=0;
 }
 function endDuel(){
- finishing=false;roundFinishAt=0;mode='menu';duelKeys.clear();
+ reportClassicGameplay(false);finishing=false;roundFinishAt=0;mode='menu';duelKeys.clear();
  document.getElementById('homeDeck').hidden=false;document.getElementById('menuSettings').hidden=false;document.getElementById('loginStreak').hidden=false;playButton.hidden=false;shopPreview.hidden=false;modePanel.hidden=false;arrowSelector.hidden=true;pauseBtn.hidden=true;hud.hidden=true;
  document.getElementById('duelHUD').hidden=true;document.getElementById('duelSplit').style.display='none';
  closeShop();closeSkins();pauseOverlay.hidden=true;acc=0;headSlow=0;pauseBtn.classList.remove('duelPause');
@@ -1391,8 +1657,8 @@ cvs.addEventListener('pointercancel',e=>{activeDrag=null;for(const ctl of Object
 window.addEventListener('resize',()=>{size();acc=0;frameT=0;});
 playButton.addEventListener('click',()=>{if(mode==='menu'&&resultOverlay.hidden){activateSound();if(runMode==='duel')runMode=document.querySelector('.modeChoice[aria-pressed="true"]')?.dataset.mode||'classic';startRound();}});
 document.getElementById('duelLaunch').addEventListener('click',()=>{if(mode==='menu'&&resultOverlay.hidden){activateSound();runMode='duel';startRound();}});
-pauseBtn.addEventListener('click',()=>{if(mode==='play'){mode='pause';pauseOverlay.hidden=false;activeDrag=null;duelKeys.clear();for(const ctl of Object.values(duelControls)){ctl.hold=false;ctl.charge=0;ctl.drag=null;}readSettings();}});
-document.getElementById('resumeGame').addEventListener('click',()=>{if(mode==='pause'){pauseOverlay.hidden=true;mode='play';acc=0;frameT=0;}});
+pauseBtn.addEventListener('click',()=>{if(mode==='play'){reportClassicGameplay(false);mode='pause';pauseOverlay.hidden=false;activeDrag=null;duelKeys.clear();for(const ctl of Object.values(duelControls)){ctl.hold=false;ctl.charge=0;ctl.drag=null;}readSettings();}});
+document.getElementById('resumeGame').addEventListener('click',()=>{if(mode==='pause'){reportClassicGameplay(true);pauseOverlay.hidden=true;mode='play';acc=0;frameT=0;}});
 document.getElementById('restartGame').addEventListener('click',()=>{activateSound();startRound();});
 document.getElementById('pauseHome').addEventListener('click',returnToMenu);
 document.getElementById('resultHome').addEventListener('click',()=>{resultOverlay.hidden=true;});
@@ -1407,7 +1673,7 @@ document.getElementById('closeStreak').addEventListener('click',()=>{streakOverl
 streakOverlay.addEventListener('click',e=>{if(e.target===streakOverlay)streakOverlay.hidden=true;});
 document.getElementById('claimStreak').addEventListener('click',claimStreakReward);
 
-window.addEventListener('keydown',e=>{if(e.key==='Escape'&&mode==='play'){mode='pause';pauseOverlay.hidden=false;activeDrag=null;duelKeys.clear();for(const ctl of Object.values(duelControls)){ctl.hold=false;ctl.charge=0;ctl.drag=null;}readSettings();}else if(e.key==='Escape'&&mode==='pause'){mode='play';pauseOverlay.hidden=true;acc=0;frameT=0;}});
+window.addEventListener('keydown',e=>{if(e.key==='Escape'&&mode==='play'){reportClassicGameplay(false);mode='pause';pauseOverlay.hidden=false;activeDrag=null;duelKeys.clear();for(const ctl of Object.values(duelControls)){ctl.hold=false;ctl.charge=0;ctl.drag=null;}readSettings();}else if(e.key==='Escape'&&mode==='pause'){reportClassicGameplay(true);mode='play';pauseOverlay.hidden=true;acc=0;frameT=0;}});
 
 document.querySelectorAll('.modeChoice').forEach(btn=>btn.addEventListener('click',()=>{
  if(mode!=='menu'||!resultOverlay.hidden)return;runMode=btn.dataset.mode;

@@ -73,27 +73,300 @@ button:focus-visible,input:focus-visible{outline:2px solid white;outline-offset:
 #replayBanner{display:none;position:fixed;z-index:7;left:50%;top:20%;transform:translateX(-50%);border:1px solid #aeb4b7;background:rgba(18,20,22,.8);padding:12px 16px;font:900 11px Arial;letter-spacing:.17em;color:#eff0f1;text-align:center;pointer-events:none;white-space:nowrap}
 #connectionOverlay{display:none;position:fixed;inset:0;z-index:10;place-items:center;background:rgba(12,14,16,.72);padding:24px;font:900 clamp(18px,4vw,33px) Arial;letter-spacing:.12em;text-align:center}
 @media(max-width:620px){.rankCard{flex-direction:column;align-items:flex-start}.rankCard span{text-align:left}#roundNotice{top:35%;white-space:normal;width:90%}#replayBanner{top:25%;white-space:normal;max-width:90%}}
+
+/* WHITEOUT / 4.2 EDITION - UI ONLY. Square edges, deliberate hierarchy. */
+:root{--u-panel:#192228;--u-panel2:#242f36;--u-edge:#687b88;--u-fg:#f3f7fa;--u-muted:#9babb6;--u-accent:#c1dbe8}
+#arena{background:#161c21}
+#topBar{top:max(13px,env(safe-area-inset-top));left:max(16px,env(safe-area-inset-left));right:max(16px,env(safe-area-inset-right));align-items:center}
+#topBar .brand{font:900 clamp(18px,2.5vw,28px) Impact,'Arial Narrow',Arial,sans-serif;letter-spacing:.075em;color:#f3f7fa}
+#topBar .overline{color:#91a5b2;font-size:9px;letter-spacing:.16em}
+#netBadge{display:flex;align-items:center;gap:7px;font-weight:900;color:#bdcdd4;background:#1b252ad9;border:1px solid #435863;padding:12px 10px;letter-spacing:.08em;white-space:nowrap}
+#netBadge:before{content:'';width:7px;height:7px;display:inline-block;background:#a8d4dc;box-shadow:0 0 8px #9ed5dda0;flex:0 0 7px}
+.lineBtn{background:#222c33;border:1px solid #79909f;color:#eff5f8;padding:11px 14px;font-weight:900}
+.lineBtn:hover{background:#354550;border-color:#d2e5ef}
+#lobby{background:radial-gradient(ellipse at 35% 30%,#2a394158,#0a0e12ee 65%),linear-gradient(125deg,#11191ce8,#080c0fef);padding:clamp(10px,2vw,20px)}
+#panel{width:min(1010px,100%);max-height:calc(100dvh - 28px);background:linear-gradient(145deg,#1b262ded,#121a1ffa);border:1px solid #82949f;box-shadow:14px 14px 0 #02050694;padding:0;overflow:auto}
+#panel:before{content:'';height:4px;display:block;background:linear-gradient(90deg,#d8e6ee 0%,#8bacbb 34%,#3e5969 34%,#3e5969 100%)}
+.lobbyHero{display:grid;grid-template-columns:1.35fr .65fr;gap:16px;min-height:190px;padding:clamp(15px,2.5vw,26px) clamp(15px,2.5vw,28px) 14px;border-bottom:1px solid #4c616c}
+.lobbyHeroCopy{min-width:0}
+#panel .eyebrow{display:flex;align-items:center;gap:9px;color:#a8bfca;letter-spacing:.18em;font-size:10px;margin-bottom:10px}
+.signalSquare{width:8px;height:8px;background:#cee4ed;display:inline-block;box-shadow:0 0 7px #a1d7e4a0}
+#panel h1{font:900 clamp(36px,5.1vw,64px)/.95 Impact,'Arial Narrow',Arial,sans-serif;letter-spacing:.025em;color:#f5f8f9;margin:0 0 9px;white-space:nowrap}
+#panel h1 em{font-style:normal;color:#a6c1ce}
+#panel .lobbySave{font:900 9px Arial,sans-serif;color:#b8dae2;letter-spacing:.12em;margin:6px 0}
+#panel p{color:#a9b9c3;margin:8px 0 10px;font-size:11px;letter-spacing:.055em;max-width:570px;line-height:1.55}
+.featureRail{display:flex;flex-wrap:wrap;gap:4px}.featureRail span{display:inline-block;background:#2c3b44;color:#c4d5de;border:1px solid #47616f;padding:5px 7px;font:900 8px Arial,sans-serif;letter-spacing:.1em}
+#lobbyPreview{height:auto;margin:0;padding:12px 20px;background:radial-gradient(circle at 50% 50%,#41535f80,#11191f 75%);border:1px solid #647784;position:relative;overflow:hidden;min-height:145px}
+#lobbyPreview:before,#lobbyPreview:after{content:'';position:absolute;left:7%;right:7%;height:2px;background:#8b9ca7;bottom:22%}
+#lobbyPreview:after{bottom:25%;height:1px;background:#4d6573}
+#lobbyPreview .fighter{color:#ecf5f8;font-family:Impact,'Arial Narrow',Arial,sans-serif;font-size:clamp(35px,4.2vw,60px);text-shadow:0 3px 12px #091319}
+#lobbyPreview .vs{font:900 18px Impact,'Arial Narrow',Arial,sans-serif;color:#d4e4ec;border:1px solid #7d929c;padding:9px;letter-spacing:.05em;background:#1d2930}
+.lobbyColumns{display:grid;grid-template-columns:minmax(0,1.25fr) minmax(275px,.75fr);gap:0}
+.lobbyQueue,.lobbyEquipment{padding:16px clamp(15px,2.5vw,28px) 18px;min-width:0}
+.lobbyQueue{border-right:1px solid #4c616c}
+.sectionHeading{display:flex;align-items:center;justify-content:space-between;gap:8px;color:#eaf2f6;margin:0 0 12px;padding-bottom:8px;border-bottom:1px solid #526772;letter-spacing:.12em}
+.sectionHeading span{font:900 13px Arial,sans-serif}.sectionHeading small{font:900 8px Arial,sans-serif;color:#829ca9;letter-spacing:.1em;text-align:right}
+.rankCard{background:#26343d;border-color:#617986;padding:12px 13px;margin:0 0 12px}
+.rankCard strong{font:900 clamp(16px,2.2vw,23px) Impact,'Arial Narrow',Arial,sans-serif;letter-spacing:.06em;color:#ebf3f7}
+.rankCard span{color:#a6bbc6;line-height:1.45}
+.options{gap:8px}.big{min-height:64px;background:#e3edf2;color:#152129;border:1px solid #f4f8fa;font:900 clamp(15px,2vw,21px) Impact,'Arial Narrow',Arial,sans-serif;letter-spacing:.05em;box-shadow:4px 4px 0 #0306087d}
+.big.alt{background:#8fabb9;border-color:#c0d7e2;color:#0d1c24}
+.big:hover:not(:disabled){transform:translateY(-1px);background:#fff;filter:none}
+#joinArea{margin:11px 0 0;gap:8px}
+#codeInput{height:54px;background:#121d24;border:1px solid #68808c;color:#e5f3f9}
+#codeInput::placeholder{color:#8198a6;font-size:13px}
+#joinBtn{flex-basis:126px;width:126px;min-height:54px;font-size:19px}
+#loadout{margin:0;background:#111b20;border:1px solid #607480;grid-template-columns:1fr 1fr;gap:10px;padding:13px}
+#loadout label{color:#d4e3e9;letter-spacing:.11em;font-size:10px}
+#loadout select{background:#293943;border:1px solid #788e9a;color:#f0f7fa;min-width:0;height:43px;font-weight:800;letter-spacing:.03em}
+#loadout small{color:#97b0bd;font-size:9px;line-height:1.5}
+.lobbyRule{margin-top:10px;background:#222e36;border:1px solid #4b6472;padding:12px}
+.lobbyRule strong{font:900 11px Arial,sans-serif;color:#e4eff3;letter-spacing:.14em;display:block;margin-bottom:10px}
+.lobbyRule div{color:#c1d0d8;font:800 10px/2 Arial,sans-serif;letter-spacing:.08em;border-bottom:1px solid #3c505b}
+.lobbyRule p{font-size:9px;margin-top:10px;color:#94a7b2}
+#status{border:1px solid #526773;border-left:4px solid #bad6e1;background:#23323b;padding:11px;margin-top:12px;color:#dbe8ee;min-height:39px;font-weight:700}
+#roomBox{background:#263844;border-color:#8caab9;margin-top:10px}
+#roomCode{color:#e3f2f7;font-size:clamp(30px,5vw,45px);letter-spacing:.16em}
+#help{font-size:10px;color:#94a9b5;padding:11px clamp(15px,2.5vw,28px) 13px;margin:0;background:#10181e;border-top:1px solid #3d5562;line-height:1.7}
+#battleUi{top:max(75px,calc(env(safe-area-inset-top) + 72px));left:2vw;right:2vw}
+.duelHeads{max-width:1200px}
+.duelHead{width:min(37%,360px);font-size:13px;color:#eef5f8;background:#152128d6;border:1px solid #68808c;border-left:3px solid #b6ceda;padding:12px 13px;box-shadow:4px 4px 0 #01050670}
+.duelHead:last-child{border-left:1px solid #68808c;border-right:3px solid #b6ceda}
+.duelHead .sub{color:#94aab6;font-size:9px;margin:6px 0 9px}
+.bar{height:12px;background:#233842;border-color:#7d95a1}.bar span{background:#e0ebef}
+.bar.power{height:5px;margin-top:6px}.bar.power span{background:#92c1d5}
+#matchCenter{top:max(76px,calc(env(safe-area-inset-top) + 73px));width:min(27vw,190px);background:#15242ddc;border:1px solid #7d94a1;padding:9px;box-shadow:4px 4px 0 #01050855;color:#e6f1f6}
+#roundBadge{font:900 10px Arial,sans-serif;letter-spacing:.08em;margin:0 0 3px}
+#matchScore{font:900 clamp(19px,3.6vw,35px)/1.1 Impact,'Arial Narrow',Arial,sans-serif;color:#fff;letter-spacing:.10em}
+#arenaName{color:#91acb9;font-size:8px;margin-top:2px}
+#battleArrows{background:#111d24e8;border:1px solid #5b7786;box-shadow:4px 4px 0 #0008;gap:5px;padding:6px}
+.battleArrow{background:#25333c;border:1px solid #627b8b;color:#dbe9f0;min-width:56px;padding:9px 6px}
+.battleArrow.equipped{background:#e3eff4;color:#121c22;border-color:white;box-shadow:inset 0 -3px 0 #8baebf}
+#battleRoom{background:#18252dbb;border:1px solid #465e6d;padding:8px 10px;color:#d0dce2;bottom:max(10px,env(safe-area-inset-bottom))}
+#roundNotice{background:#17242bdc;padding:12px 16px;border-left:4px solid #d1e4ee;white-space:normal;max-width:95vw}
+#replayBanner{color:#fff;background:#243440de;border:1px solid #90aab6;padding:8px}
+#finished{background:#080e12db;backdrop-filter:blur(7px)}
+#finishedPanel{width:min(520px,100%);background:linear-gradient(150deg,#27343d,#121b22);border:1px solid #9bb0bb;padding:32px 25px;box-shadow:13px 13px 0 #04080baa}
+#finished h2{font-family:Impact,'Arial Narrow',Arial,sans-serif;letter-spacing:.05em;font-size:clamp(40px,6.5vw,68px);color:#f2f8fb}
+#finishedScore{font:900 40px Impact,'Arial Narrow',Arial,sans-serif;color:#bcd7e3}
+#countdown{color:#f3faff;text-shadow:4px 5px 0 #122028,0 0 35px #cce7ff6d}
+#toast{font-family:Impact,'Arial Narrow',Arial,sans-serif;color:#ebf7fd}
+.touchBtn{background:#405460;border-color:#acc5d2;color:#f7fafb;box-shadow:3px 3px 0 #040709}
+.touchBtn.shoot{background:#e0edf4;border-color:white;color:#15232b}
+@media(max-width:780px){#panel{width:min(710px,100%)}.lobbyHero{grid-template-columns:1fr 180px}.lobbyColumns{grid-template-columns:1.1fr .9fr}.lobbyQueue,.lobbyEquipment{padding:12px}.lobbyRule div{font-size:9px}#lobbyPreview{min-height:140px}#panel h1{font-size:clamp(34px,5.5vw,49px)}}
+@media(max-width:650px){#panel{max-height:calc(100dvh - 18px)}.lobbyHero{grid-template-columns:1fr;min-height:0;padding:16px;gap:8px}#lobbyPreview{height:75px;min-height:75px;padding:5px 20px}#lobbyPreview .fighter{font-size:36px}.lobbyColumns{grid-template-columns:1fr}.lobbyQueue{border-right:0;border-bottom:1px solid #4e646f}.lobbyQueue,.lobbyEquipment{padding:12px 16px}#panel h1{font-size:clamp(32px,8.6vw,46px);white-space:normal}#panel p{font-size:10px}#panel .eyebrow{font-size:8px;margin-bottom:7px}.featureRail span{font-size:7px}.sectionHeading{margin-bottom:8px}.rankCard{padding:8px;margin-bottom:8px}.options .big{min-height:53px;font-size:15px}#codeInput,#joinBtn{height:47px;min-height:47px}#help{padding:9px 16px;font-size:9px}#topBar .brand{font-size:18px}#topBar .overline{font-size:8px}#netBadge{font-size:9px;padding:8px 6px}#home{font-size:10px;padding:9px}#battleUi{top:max(109px,calc(env(safe-area-inset-top) + 106px))}.duelHead{padding:7px 8px;font-size:10px;width:36%}.duelHead .sub{font-size:8px;margin:4px 0}.bar{height:9px}#matchCenter{top:max(111px,calc(env(safe-area-inset-top) + 108px));width:26%;padding:5px 3px}#roundBadge{font-size:8px}#matchScore{font-size:24px}#arenaName{font-size:7px}#battleArrows{max-width:calc(100% - 12px)}.battleArrow{min-width:40px;font-size:9px}#battleRoom{font-size:9px}}
+@media(max-height:610px){#panel{max-height:calc(100dvh - 14px)}.lobbyHero{min-height:0;padding:10px 14px;gap:10px}#panel h1{font-size:clamp(30px,4.3vw,43px);margin:0 0 4px}#panel p{margin:4px 0;font-size:9px}#lobbyPreview{min-height:95px;height:auto}.lobbyQueue,.lobbyEquipment{padding:10px 13px}.sectionHeading{margin-bottom:7px;padding-bottom:5px}.rankCard{margin-bottom:6px;padding:7px}.big{min-height:49px}#joinArea{margin:7px 0 0}#codeInput,#joinBtn{min-height:44px;height:44px}#loadout{padding:8px}#loadout select{height:35px;margin-top:4px}#loadout small{font-size:8px}.lobbyRule{margin-top:6px;padding:7px}.lobbyRule strong{margin-bottom:4px}.lobbyRule div{line-height:1.55}.lobbyRule p{margin:6px 0 0}#status{padding:7px;font-size:10px;min-height:0;margin-top:7px}#help{padding:6px 13px;font-size:8px}#battleUi{top:52px}#matchCenter{top:53px}#battleRoom{padding:5px}}
+@media(max-height:590px) and (max-width:650px){.lobbyHero{grid-template-columns:1fr 150px}#lobbyPreview{min-height:85px;height:85px}#panel h1{font-size:29px}#lobbyPreview .fighter{font-size:30px}#lobbyPreview .vs{font-size:14px}.lobbyColumns{grid-template-columns:1.1fr .9fr}.lobbyQueue{border-right:1px solid #4e646f;border-bottom:0}.lobbyQueue,.lobbyEquipment{padding:8px}.lobbyRule{display:none}.sectionHeading small{display:none}#battleUi{top:52px}#matchCenter{top:53px}}
+
+/* Final viewport clearance: fixed connection bar must never cover lobby text. */
+#topBar .overline{display:none}
+@media(max-width:650px){
+ #lobby{padding:67px 10px 9px;place-items:start center;align-content:start}
+ #panel{width:100%;max-height:calc(100dvh - 77px)}
+}
+@media(max-height:610px){
+ #lobby{padding-top:57px;place-items:start center;align-content:start}
+ #panel{max-height:calc(100dvh - 65px)}
+}
+@media(max-width:650px) and (max-height:610px){
+ #lobby{padding:56px 8px 6px}
+ #panel{max-height:calc(100dvh - 62px)}
+}
+
+/* WHITEOUT 4.3 | COLOUR. Same limited palette as Classic. */
+:root{--ui-amber:#efad65;--ui-amber-hi:#ffc68a;--ui-tide:#76bfbe;--ui-blue:#9fc5d4;--ui-coral:#da8178;--ui-gold:#e4c27b;--ui-mint:#9cc7a3;--ui-text:#f1f4ee}
+#arena{background:#171d21}
+#lobby{background:#121b20e8}
+#panel{background:#1e292f;border-color:#688087;box-shadow:10px 10px 0 #03050695}
+#panel:before{height:4px;background:linear-gradient(90deg,var(--ui-amber) 0 30%,var(--ui-tide) 30% 57%,#526e7b 57% 100%)}
+#topBar .brand{color:#f4f3ec}
+#netBadge{background:#23363a;border-color:#4d777a;color:#b7e0d9}
+#netBadge:before,.signalSquare{background:var(--ui-tide);box-shadow:none}
+#panel .eyebrow{color:#bad5d4}
+#panel h1{color:#f4f3ec}
+#panel h1 em{color:var(--ui-amber)}
+#panel .lobbySave{color:#a8d5c8}
+#panel p{color:#b4c2c4}
+.featureRail span{background:#2a3940;color:#c5d7d6;border-color:#49616c}
+.featureRail span:nth-child(2){background:#3e362b;color:#f3cb96;border-color:#8d6e4f}
+.featureRail span:nth-child(3){background:#254044;color:#a7e0db;border-color:#56878a}
+#lobbyPreview{background:#26333a;border-color:#5c7a81}
+#lobbyPreview:before{background:#77939b}
+#lobbyPreview:after{background:#4e6871}
+#lobbyPreview .vs{color:#261e16;background:var(--ui-amber);border-color:var(--ui-amber-hi)}
+.lobbyHero{border-bottom-color:#526a72}
+.lobbyQueue{border-right-color:#526a72}
+.sectionHeading{color:#e5f0ec;border-bottom-color:#4f6b72}
+.sectionHeading>span:first-child:before{content:'';display:inline-block;width:5px;height:10px;background:var(--ui-tide);margin-right:7px}
+.lobbyQueue .sectionHeading>span:first-child:before{background:var(--ui-amber)}
+.rankCard{background:#2e3839;border:1px solid #697b76;border-left:4px solid var(--ui-gold)}
+.rankCard strong{color:#f1d6a3}
+.rankCard span{color:#b8c4bb}
+#host.big{background:var(--ui-amber);color:#251e18;border:1px solid var(--ui-amber-hi);box-shadow:4px 4px 0 #080d10}
+#quick.big{background:#4c969b;color:#f0fbf9;border:1px solid #8ad2cf;box-shadow:4px 4px 0 #080d10}
+#joinBtn.big{background:#afc5ca;color:#19292e;border-color:#cde3e5}
+#host.big:hover:not(:disabled){background:var(--ui-amber-hi)}
+#quick.big:hover:not(:disabled){background:#62acaf}
+#joinBtn.big:hover:not(:disabled){background:#d4e4e6}
+.big:disabled{filter:saturate(.35);opacity:.58;box-shadow:none!important}
+#codeInput{background:#17282e;border-color:#648087;color:#eef7f5}
+#codeInput:focus{outline:2px solid var(--ui-tide);outline-offset:1px}
+#loadout{background:#1c2b31;border-color:#5d7980}
+#loadout label{color:#dce5e3}
+#loadout select{background:#334248;border-color:#68858b;color:#f0f6f3}
+#loadout select:focus-visible{outline:2px solid var(--ui-tide)}
+.lobbyRule{background:#243338;border-color:#4e6b73}
+.lobbyRule strong{color:var(--ui-amber)}
+.lobbyRule div{color:#d0dbd8;border-bottom-color:#405861}
+#status{background:#26373c;border-color:#536e76;border-left:4px solid var(--ui-tide);color:#d6e9e3}
+#roomBox{background:#263b40;border-color:#60949a}
+#roomCode{color:#f1c98b}
+#help{background:#151f24;border-color:#50676c;color:#b8c8c6}
+.lineBtn{background:#26363d;color:#dceae8;border-color:#739198}
+.lineBtn:hover{background:#354d50;border-color:#a3ccc8}
+#topBar #home{border-color:#82979a;color:#f4f2e8}
+.duelHead{background:#1a2a2fdc;border:1px solid #5d7980;border-left:4px solid var(--ui-amber)}
+.duelHead:last-child{border-right:4px solid var(--ui-tide);border-left:1px solid #5d7980}
+.duelHead .sub{color:#a9bdc1}
+.duelHead .bar{background:#3f3436;border-color:#6c6f6d}
+.duelHead .bar span{background:var(--ui-coral)}
+.duelHead .bar.power{background:#283c43}
+.duelHead .bar.power span{background:var(--ui-amber)}
+.duelHead:last-child .bar.power span{background:var(--ui-tide)}
+#matchCenter{background:#1e2d34ed;border-color:#6b858b;color:#f4f2e8}
+#roundBadge{color:#b7d4d6}
+#matchScore{color:var(--ui-amber)}
+#arenaName{color:#b7c8c5}
+#battleArrows{background:#14242be8;border-color:#5d777e}
+.battleArrow{background:#293840;border-color:#59747c;color:#d6e4e4;position:relative}
+.battleArrow[data-arrow="lightning"]{border-bottom:3px solid #80c8e3}
+.battleArrow[data-arrow="flame"]{border-bottom:3px solid #f0a36b}
+.battleArrow[data-arrow="acid"]{border-bottom:3px solid #badb7b}
+.battleArrow[data-arrow="poison"]{border-bottom:3px solid #bba2db}
+.battleArrow[data-arrow="frost"]{border-bottom:3px solid #a8d6dc}
+.battleArrow[data-arrow="piercer"]{border-bottom:3px solid #d3dadb}
+.battleArrow.equipped{background:#e8e4d8;color:#1f292c;border-color:var(--ui-amber);box-shadow:inset 0 -3px 0 #c28b53}
+#battleRoom{background:#203038d9;border-color:#62818a;color:#e0eae6}
+#roundNotice{background:#263438e5;border-left:4px solid var(--ui-amber)}
+#replayBanner{background:#2a3532ec;border:1px solid var(--ui-gold);color:#f4daab}
+#finished{background:#0d161acc}
+#finishedPanel{background:#202d33;border-color:#7c9a9c;box-shadow:10px 10px 0 #040708ad}
+#finishedPanel .eyebrow{color:#c2dddb}
+#finished h2{color:var(--ui-amber)}
+#finishedScore{color:#d9e5df}
+#finished #rematch{background:var(--ui-amber);color:#261e18;border-color:var(--ui-amber-hi)}
+#countdown{color:var(--ui-amber);text-shadow:3px 4px 0 #192328}
+#toast{color:#f6d8a9}
+.touchBtn{background:#395962;border-color:#86b8be;color:#fff}
+.touchBtn.shoot{background:var(--ui-amber);border-color:var(--ui-amber-hi);color:#261f18}
+#syncSplash{background:#151b20!important;color:var(--ui-text)!important}
+#syncSplash span{color:var(--ui-tide)!important}
+@media(max-width:650px){.lobbyQueue{border-right:0;border-bottom-color:#546d74}}
+@media(max-height:590px) and (max-width:650px){.lobbyQueue{border-right:1px solid #526a72;border-bottom:0}}
+@media(prefers-reduced-motion:reduce){button{transition:none!important}}
+
+
+/* WHITEOUT 4.4 / CLEAN UI. Keep essential status, matchmaking, input and match scores. */
+#topBar .overline,#panel .eyebrow,#panel .lobbySave,
+#panel .lobbyHeroCopy>p,#panel .featureRail,#lobbyPreview,
+#panel .sectionHeading,#panel .rankCard,#panel .lobbyRule,
+#panel #help,#panel #loadout>small,#panel #roomCaption,
+#panel #rankRecord,#battleUi .duelHead .sub,#arenaName,
+#finishedPanel .eyebrow,#finishedPanel #finishInfo{display:none!important}
+#topBar{gap:12px}
+#topBar .brand{font:900 clamp(19px,2.4vw,26px) Impact,'Arial Narrow',Arial,sans-serif!important;letter-spacing:.08em!important}
+#panel{max-width:925px!important;background:#1b252bec!important}
+.lobbyHero{display:block!important;min-height:0!important;padding:22px 25px 18px!important}
+#panel h1{margin:0!important;font-size:clamp(36px,5.3vw,62px)!important;white-space:normal!important}
+.lobbyColumns{grid-template-columns:minmax(0,1.1fr) minmax(240px,.9fr)!important}
+.lobbyQueue,.lobbyEquipment{padding:22px!important}
+.lobbyEquipment{display:flex;flex-direction:column;justify-content:center}
+#loadout{padding:16px!important;background:#18252c!important}
+#loadout label{font-size:0!important;line-height:0!important;letter-spacing:0!important}
+#loadout select{font:900 14px Arial,sans-serif!important;line-height:normal!important;min-height:52px!important;margin:0!important;padding:0 10px!important}
+#lobby .options{gap:10px}
+#lobby .options .big{min-height:79px!important;font:900 clamp(18px,2vw,24px) Impact,'Arial Narrow',Arial,sans-serif!important}
+#joinArea{margin-top:12px!important}
+#codeInput,#joinBtn{height:61px!important;min-height:61px!important}
+#codeInput{font-size:18px!important}
+#codeInput::placeholder{font-size:12px!important;letter-spacing:.09em}
+#joinBtn{font-size:19px!important}
+#status{min-height:40px!important;font-size:12px!important;line-height:1.4}
+#roomBox{padding:13px!important}
+#roomCode{font-size:clamp(30px,5vw,47px)!important}
+#roomBox .roomActions .lineBtn{min-height:42px!important;font-size:11px!important}
+#finishedPanel .big{min-height:70px!important}
+#finishedPanel .lineBtn{min-height:48px!important}
+#matchCenter{padding:8px 12px!important}
+#matchScore{font-size:clamp(23px,3.5vw,36px)!important}
+#roundBadge{font-size:11px!important}
+@media(max-width:650px){
+ #lobby{padding:66px 10px 10px!important;place-items:start center!important}
+ #panel{max-height:calc(100dvh - 76px)!important}
+ .lobbyHero{padding:13px 16px 11px!important}
+ #panel h1{font-size:clamp(33px,8vw,45px)!important}
+ .lobbyColumns{grid-template-columns:1fr!important}
+ .lobbyQueue,.lobbyEquipment{padding:12px 16px!important}
+ .lobbyQueue{border-right:0!important;border-bottom:1px solid #4d6970!important}
+ #lobby .options .big{min-height:56px!important;font-size:16px!important}
+ #codeInput,#joinBtn{min-height:48px!important;height:48px!important}
+ #loadout{padding:10px!important;gap:8px!important}
+ #loadout select{height:43px!important;min-height:43px!important;font-size:12px!important}
+ #status{margin-top:8px!important;font-size:11px!important;padding:8px!important}
+ #roomBox{padding:9px!important}
+}
+@media(max-height:580px) and (min-width:651px){
+ .lobbyHero{padding:10px 18px!important}
+ .lobbyQueue,.lobbyEquipment{padding:10px 18px!important}
+ #lobby .options .big{min-height:49px!important}
+ #codeInput,#joinBtn{min-height:45px!important;height:45px!important}
+ #loadout{padding:8px!important}
+ #loadout select{min-height:38px!important;height:38px!important}
+}
+@media(max-height:600px) and (max-width:650px){
+ .lobbyHero{padding:7px 12px!important}
+ #panel h1{font-size:30px!important}
+ .lobbyColumns{grid-template-columns:1.1fr .9fr!important}
+ .lobbyQueue{border-right:1px solid #4d6970!important;border-bottom:0!important}
+ .lobbyQueue,.lobbyEquipment{padding:7px!important}
+ #lobby .options .big{min-height:44px!important;font-size:13px!important}
+ #codeInput,#joinBtn{height:41px!important;min-height:41px!important}
+ #loadout select{min-height:37px!important;height:37px!important}
+}
+
 </style></head><body>
+<div id="syncSplash" role="status" aria-live="polite" style="position:fixed;inset:0;z-index:99;display:flex;flex-direction:column;gap:12px;align-items:center;justify-content:center;background:#181a1d;color:#e9e9e9;font:900 clamp(24px,4vw,40px) Arial,sans-serif;letter-spacing:.16em">WHITEOUT<span style="font:700 11px Arial,sans-serif;letter-spacing:.18em;color:#aeb5b8">CHECKING SAVED PROGRESS…</span></div>
 <canvas id="arena" aria-label="WHITEOUT multiplayer archery battlefield"></canvas>
-<div id="topBar"><div><div class="brand">STILLSHOT: WHITEOUT</div><div class="overline">ONLINE / CLASSIC PHYSICS 4.0 / BO5</div></div><div style="display:flex;align-items:flex-start;gap:14px"><div id="netBadge">CONNECTING</div><button id="home" class="lineBtn">← HOME</button></div></div>
-<div id="lobby"><section id="panel"><div class="eyebrow">MULTIPLAYER / PRIVATE & MATCHMAKING</div><h1>ONLINE 1V1</h1><p>SERVER PHYSICS · BEST OF 5 · RICOCHETS · CLASSIC BOWS & SKINS · PRIVATE ROOMS OR SKILL-BASED QUICK MATCH.</p>
-<div id="lobbyPreview"><div class="fighter">◯<span style="font-size:.56em">╱</span></div><div class="vs">VS</div><div class="fighter">◯<span style="font-size:.56em">╱</span></div></div>
-<div class="rankCard"><strong id="rankInfo">BRONZE · 1000</strong><span id="rankRecord">BETA · SERVER-SESSION RANKING</span></div>
-<div class="options"><button id="host" class="big">HOST ROOM</button><button id="quick" class="big alt">RANKED QUICK MATCH</button></div>
-<div id="joinArea"><input id="codeInput" maxlength="6" autocomplete="off" spellcheck="false" placeholder="6-LETTER CODE" aria-label="Private room code"><button id="joinBtn" class="big">JOIN ROOM</button></div>
-<div id="loadout"><label>BOW <select id="bowSelect" aria-label="Select bow"></select></label><label>ARROW <select id="arrowSelect" aria-label="Select arrow"></select></label><small>PRIVATE: FULL CLASSIC STATS. RANKED QUICK: NORMALIZED BOW STATS &amp; CAPPED ELEMENTAL POWER. BETA RATINGS RESET WHEN THE FREE SERVER RESTARTS.</small></div>
-<div id="status" role="status" aria-live="polite">CONNECTING TO SERVER…</div>
-<div id="roomBox"><div id="roomCaption">PRIVATE ROOM · SHARE THIS CODE</div><strong id="roomCode">------</strong><div class="roomActions"><button id="copyCode" class="lineBtn">COPY CODE</button><button id="copyLink" class="lineBtn">COPY INVITE LINK</button><button id="cancelBtn" class="lineBtn">CANCEL</button></div></div>
-<div id="help">P1: W/S + HOLD/RELEASE A &nbsp; | &nbsp; P2: ↑/↓ + HOLD/RELEASE ← &nbsp; | &nbsp; 1–7: CHANGE ARROW<br>On mobile: drag to aim and release, or use the on-screen aim and fire buttons. No movement.</div>
-</section></div>
+<div id="topBar"><div><div class="brand">STILLSHOT: WHITEOUT</div><div class="overline">ONLINE ARENA / BO5 / RAGDOLL PHYSICS</div></div><div style="display:flex;align-items:flex-start;gap:14px"><div id="netBadge">CONNECTING</div><button id="home" class="lineBtn">← HOME</button></div></div>
+<div id="lobby"><section id="panel" aria-label="Online multiplayer lobby">
+<div class="lobbyHero">
+ <div class="lobbyHeroCopy">
+  <div class="eyebrow"><b class="signalSquare"></b> ONLINE / MULTIPLAYER / V4.3</div>
+  <h1>ENTER THE <em>ARENA.</em></h1>
+  <div data-whiteout-save-status class="lobbySave">LOADING SAVE…</div>
+  <p>ONE SHOT CAN CHANGE EVERYTHING. NO MOVEMENT. ONLY AIM, TIMING AND THE PERFECT RELEASE.</p>
+  <div class="featureRail"><span>17-JOINT RAGDOLL</span><span>BO5</span><span>ARROW DEFLECTION</span><span>7 ELEMENTAL ARROWS</span></div>
+ </div><div id="lobbyPreview"><div class="fighter">◯<span style="font-size:.56em">╱</span></div><div class="vs">VS</div><div class="fighter">◯<span style="font-size:.56em">╱</span></div></div></div>
+<div class="lobbyColumns">
+ <div class="lobbyQueue"><div class="sectionHeading"><span>01 / BATTLE</span><small>CHOOSE YOUR CONNECTION</small></div>
+ <div class="rankCard"><strong id="rankInfo">BRONZE · 1000</strong><span id="rankRecord">BETA · SERVER-SESSION RANKING</span></div><div class="options"><button class="big" id="host">HOST ROOM</button><button class="big alt" id="quick">RANKED QUICK MATCH</button></div><div id="joinArea"><input aria-label="Private room code" autocomplete="off" id="codeInput" maxlength="6" placeholder="6-LETTER CODE" spellcheck="false"/><button class="big" id="joinBtn">JOIN ROOM</button></div><div aria-live="polite" id="status" role="status">CONNECTING TO SERVER…</div><div id="roomBox"><div id="roomCaption">PRIVATE ROOM · SHARE THIS CODE</div><strong id="roomCode">------</strong><div class="roomActions"><button class="lineBtn" id="copyCode">COPY CODE</button><button class="lineBtn" id="copyLink">COPY INVITE LINK</button><button class="lineBtn" id="cancelBtn">CANCEL</button></div></div></div>
+ <div class="lobbyEquipment"><div class="sectionHeading"><span>02 / EQUIPMENT</span><small>BUILD YOUR LOADOUT</small></div>
+ <div id="loadout"><label>BOW <select aria-label="Select bow" id="bowSelect"></select></label><label>ARROW <select aria-label="Select arrow" id="arrowSelect"></select></label><small>PRIVATE: FULL CLASSIC STATS. RANKED QUICK: NORMALIZED BOW STATS &amp; CAPPED ELEMENTAL POWER. BETA RATINGS RESET WHEN THE FREE SERVER RESTARTS.</small></div>
+ <div class="lobbyRule"><strong>HOW TO PLAY</strong><div>01 &nbsp; AIM WITH W / S OR TOUCH</div><div>02 &nbsp; HOLD TO CHARGE YOUR BOW</div><div>03 &nbsp; RELEASE TO FIRE</div><p>PRIVATE ROOMS KEEP CLASSIC WEAPON STATS. RANKED NORMALIZES POWER FOR FAIR MATCHES.</p></div></div>
+</div>
+<div id="help">P1: W/S + HOLD/RELEASE A   |   P2: ↑/↓ + HOLD/RELEASE ←   |   1–7: CHANGE ARROW<br/>On mobile: drag to aim and release, or use the on-screen aim and fire buttons. No movement.</div></section></div>
 <div id="battleUi"><div class="duelHeads"><div class="duelHead">P1 · LEFT <span id="meLeft"></span><div class="sub">W / S / A</div><div class="bar"><span id="hp1"></span></div><div class="bar power"><span id="power1"></span></div></div><div class="duelHead">P2 · RIGHT <span id="meRight"></span><div class="sub">↑ / ↓ / ←</div><div class="bar"><span id="hp2"></span></div><div class="bar power"><span id="power2"></span></div></div></div></div>
 <div id="matchCenter"><div id="roundBadge">ROUND 1 / BO5</div><div id="matchScore">0 : 0</div><div id="arenaName">LEVEL</div></div><div id="countdown">3</div>
 <div id="roundNotice"></div><div id="replayBanner">FINAL ARROW · SLOW MOTION REPLAY</div><div id="connectionOverlay">RECONNECTING…</div>
 <div id="toast" aria-live="polite"></div><div id="battleArrows" aria-label="Choose elemental arrow"></div><div id="battleRoom">ROOM <span id="activeRoom">------</span></div>
 <div id="mobileControls" style="display:none"><button class="touchBtn" id="aimUp">↑</button><button class="touchBtn" id="aimDown">↓</button><button class="touchBtn shoot" id="touchShoot">HOLD / FIRE</button></div>
 <div id="finished"><div id="finishedPanel"><div class="eyebrow">BEST OF FIVE · MATCH RESULT</div><h2 id="winner">YOU WIN</h2><p id="finishInfo">PLAYER 1 WINS</p><div id="finishedScore">1 : 0</div><button id="rematch" class="big">REMATCH</button><button id="backResult" class="lineBtn">BACK TO ONLINE MENU</button></div></div>
+<script src="cloud-save.js"></script>
 <script>
-(()=>{'use strict';
+(async()=>{'use strict';
+await window.WHITEOUT_SAVE.ready;
+window.WHITEOUT_SAVE.updateIndicators();
+document.getElementById('syncSplash')?.remove();
 const $=s=>document.querySelector(s),canvas=$('#arena'),ctx=canvas.getContext('2d',{alpha:false}),clamp=(v,a,b)=>Math.min(b,Math.max(a,v)),lerp=(a,b,t)=>a+(b-a)*t,rand=(a,b)=>a+Math.random()*(b-a);
 const NAMES=['head','neck','chest','belly','hip','lS','rS','lE','rE','lH','rH','lHip','rHip','lK','rK','lF','rF'];
 const INDEX=Object.fromEntries(NAMES.map((n,i)=>[n,i]));
@@ -125,6 +398,60 @@ const emptyNodes=(i,arena)=>{const pf=arena?.platforms?.[i]||{x:i===0?120:650,y:
 let ws=null,ready=false,stage='lobby',seat=0,roomCode='',state=null,round=1,roundWon=[0,0],charging=false,heldAim=0,aim=.12,keys=new Set(),drag=null,lastFrame=performance.now(),lastAim=0,pingLast=0,pingMs=null,retryTimer=null,skin='whiteout',selectedBow='ash',selectedArrow='basic',audio=null;
 let particles=[],splats=[],snapshotAt=0,renderNodes=[emptyNodes(0),emptyNodes(1)],prevHP=[240,240],infoTimeout=0,localChargeAt=0,latestFxId=0,finishTimer=null;
 let replayFrames=null,replayStart=0,noticeTimer=null,rankData=null,accountToken='',rejoinToken='',resumePending=false,liveArena=null,roomRanked=false,clientRetries=0;
+// CrazyGames v3: room reporting is a platform feature. The Render server
+// remains authoritative for room membership and gameplay.
+let pendingFriendRoom='',changingFriendRoom=false,instantHostRequested=false,lastPlatformRoom='',cgGameplayActive=false;
+const CG_CODE=/^[A-HJ-NP-Z2-9]{6}$/;
+const cgGame=()=>window.WHITEOUT_SAVE?.mode==='cloud'?window.CrazyGames?.SDK?.game:null;
+function inviteCode(params){
+  if(!params||typeof params!=='object')return '';
+  const raw=params.room||params.roomId||params.code;
+  if(typeof raw!=='string')return '';
+  const code=raw.trim().toUpperCase();return CG_CODE.test(code)?code:'';
+}
+function platformRoom(code,joinable){
+  const g=cgGame();if(!g?.updateRoom||!CG_CODE.test(code||''))return;
+  const label=code+':'+Number(!!joinable);
+  if(label===lastPlatformRoom)return;
+  try{g.updateRoom({roomId:'WHITEOUT-'+code,isJoinable:!!joinable,inviteParams:{room:code}});lastPlatformRoom=label;}
+  catch(e){console.warn('[WHITEOUT Friends] Room update failed:',e);}
+}
+function platformLeft(){
+  const g=cgGame();if(!lastPlatformRoom)return;lastPlatformRoom='';
+  try{g?.leftRoom?.();}catch(e){console.warn('[WHITEOUT Friends] Leave report failed:',e);}
+}
+function platformGameplay(active){
+  const g=cgGame();if(!g||cgGameplayActive===active)return;
+  try{if(active)g.gameplayStart?.();else g.gameplayStop?.();cgGameplayActive=active;}
+  catch(e){console.warn('[WHITEOUT Friends] Gameplay signal failed:',e);}
+}
+function followFriendInvite(params){
+  const code=inviteCode(params);if(!code)return;
+  if(roomCode===code&&stage!=='lobby'&&stage!=='searching'){showToast('ALREADY IN THIS ROOM');return;}
+  pendingFriendRoom=code;instantHostRequested=false;
+  if(!ready){status('CONNECTING TO FRIEND ROOM…');return;}
+  if(stage==='lobby'){pendingFriendRoom='';$('#codeInput').value=code;send('join',{code});status('JOINING FRIEND ROOM…');return;}
+  if(!changingFriendRoom){changingFriendRoom=true;platformLeft();platformGameplay(false);send('leave');status('SWITCHING TO FRIEND ROOM…');}
+}
+function finishFriendSwitch(){
+  changingFriendRoom=false;
+  if(pendingFriendRoom){const code=pendingFriendRoom;pendingFriendRoom='';$('#codeInput').value=code;
+    if(ready){send('join',{code});status('JOINING FRIEND ROOM…');}}
+}
+function initCrazyGamesFriends(){
+  const g=cgGame();if(!g)return;
+  try{g.addJoinRoomListener?.(followFriendInvite);}catch(e){console.warn('[WHITEOUT Friends] Join listener:',e);}
+  let incoming=g.inviteParams;
+  if(!inviteCode(incoming)&&typeof g.getInviteParam==='function'){
+    const code=g.getInviteParam('room');if(typeof code==='string')incoming={room:code};
+  }
+  // A party invite beats the instant multiplayer launch flag.
+  if(inviteCode(incoming))pendingFriendRoom=inviteCode(incoming);
+  else if(g.isInstantMultiplayer)instantHostRequested=true;
+}
+initCrazyGamesFriends();
+window.addEventListener('pagehide',()=>{platformGameplay(false);platformLeft();});
+
 function savedToken(){try{return localStorage.getItem('whiteout_online_account_v4')||'';}catch{return '';}}
 function saveToken(token){try{localStorage.setItem('whiteout_online_account_v4',token);}catch{}}
 function storeRoom(){try{sessionStorage.setItem('whiteout_online_room_v4',JSON.stringify({code:roomCode,token:rejoinToken}));}catch{}}
@@ -135,14 +462,14 @@ function showConnection(msg){const el=$('#connectionOverlay');el.textContent=msg
 function showRound(msg){const el=$('#roundNotice');el.textContent=msg;el.style.display='block';clearTimeout(noticeTimer);noticeTimer=setTimeout(()=>el.style.display='none',2450);}
 function resetReplay(){replayFrames=null;replayStart=0;$('#replayBanner').style.display='none';}
 
-function loadSave(){try{return JSON.parse(localStorage.getItem('whiteout_save_v1')||'{}')||{};}catch{return {};}}
+function loadSave(){try{return JSON.parse(window.WHITEOUT_SAVE.getGame()||'{}')||{};}catch{return {};}}
 function getLoadout(){const s=loadSave();skin=s.p1Skin||'whiteout';selectedBow=BOWS[s.equippedBow]?s.equippedBow:'ash';selectedArrow=ARROWS[s.equippedArrow]?s.equippedArrow:'basic';}
 getLoadout();
 function sound(type){if(!audio)return;try{const o=audio.createOscillator(),g=audio.createGain(),t=audio.currentTime;o.connect(g);g.connect(audio.destination);o.type=type==='hit'?'sawtooth':'sine';o.frequency.setValueAtTime(type==='hit'?155:220,t);o.frequency.exponentialRampToValueAtTime(type==='hit'?70:95,t+.1);g.gain.setValueAtTime(type==='hit'?.022:.015,t);g.gain.exponentialRampToValueAtTime(.0001,t+.12);o.start();o.stop(t+.13);}catch{}}
 function activateSound(){try{const A=window.AudioContext||window.webkitAudioContext;if(A){audio??=new A();audio.resume();}}catch{}}
 function status(v){$('#status').textContent=v;}
 function send(t,other={}){if(ws?.readyState===WebSocket.OPEN)ws.send(JSON.stringify({t,...other}));}
-function netURL(){return `${location.protocol==='https:'?'wss:':'ws:'}//${location.host}/ws`;}
+function netURL(){return 'wss://whiteout-online.onrender.com/ws';}
 function updateSelectors(){
  $('#bowSelect').innerHTML=Object.entries(BOWS).map(([id,b])=>`<option value="${id}">${b.name}</option>`).join('');
  $('#arrowSelect').innerHTML=Object.entries(ARROWS).map(([id,a])=>`<option value="${id}">${a.name}</option>`).join('');
@@ -158,9 +485,9 @@ $('#arrowSelect').addEventListener('change',e=>chooseArrow(e.target.value));
 $('#battleArrows').addEventListener('click',e=>{const b=e.target.closest('[data-arrow]');if(b)chooseArrow(b.dataset.arrow);});
 updateSelectors();
 function buttons(){const can=ready&&stage==='lobby';for(const id of ['#host','#quick','#joinBtn'])$(id).disabled=!can;$('#cancelBtn').disabled=!['waiting','searching'].includes(stage);}
-function showLobby(){clearRoom();hideConnection();resetReplay();$('#roundNotice').style.display='none';if(finishTimer){clearTimeout(finishTimer);finishTimer=null;}stage='lobby';state=null;charging=false;heldAim=0;keys.clear();drag=null;$('#lobby').style.display='grid';$('#battleUi').style.display='none';$('#matchCenter').style.display='none';$('#finished').style.display='none';$('#mobileControls').style.display='none';$('#battleArrows').style.display='none';$('#battleRoom').style.display='none';$('#countdown').style.display='none';$('#roomBox').style.display='none';buttons();}
-function startVisual(m){if(finishTimer){clearTimeout(finishTimer);finishTimer=null;}hideConnection();resetReplay();$('#roundNotice').style.display='none';
- seat=m.seat;roomCode=m.code;rejoinToken=m.token||rejoinToken;roomRanked=!!m.ranked;liveArena=m.arena||liveArena;storeRoom();
+function showLobby(){platformGameplay(false);platformLeft();clearRoom();hideConnection();resetReplay();$('#roundNotice').style.display='none';if(finishTimer){clearTimeout(finishTimer);finishTimer=null;}stage='lobby';state=null;charging=false;heldAim=0;keys.clear();drag=null;$('#lobby').style.display='grid';$('#battleUi').style.display='none';$('#matchCenter').style.display='none';$('#finished').style.display='none';$('#mobileControls').style.display='none';$('#battleArrows').style.display='none';$('#battleRoom').style.display='none';$('#countdown').style.display='none';$('#roomBox').style.display='none';buttons();}
+function startVisual(m){platformGameplay(false);if(finishTimer){clearTimeout(finishTimer);finishTimer=null;}hideConnection();resetReplay();$('#roundNotice').style.display='none';
+ seat=m.seat;roomCode=m.code;rejoinToken=m.token||rejoinToken;roomRanked=!!m.ranked;liveArena=m.arena||liveArena;storeRoom();platformRoom(roomCode,false);
  round=m.round;roundWon=m.wins||[0,0];state=null;renderNodes=[emptyNodes(0,liveArena),emptyNodes(1,liveArena)];particles=[];splats=[];charging=false;drag=null;stage='countdown';
  $('#lobby').style.display='none';$('#battleUi').style.display='block';$('#matchCenter').style.display='block';$('#battleRoom').style.display='block';$('#activeRoom').textContent=roomCode;$('#finished').style.display='none';$('#countdown').style.display='block';$('#countdown').textContent='3';$('#mobileControls').style.display='';$('#battleArrows').style.display='flex';$('#meLeft').textContent=seat===1?'· YOU':'';$('#meRight').textContent=seat===2?'· YOU':'';setScore();}
 function setScore(){$('#roundBadge').textContent='ROUND '+round+' / BO5'+(roomRanked?' · RANKED':'');$('#matchScore').textContent=roundWon.join(' : ');$('#arenaName').textContent=liveArena?.theme||'LEVEL';}
@@ -183,7 +510,7 @@ function connect(){
   ready=false;$('#netBadge').textContent='OFFLINE';
   const prior=recoverRoom();
   if(prior&&['playing','countdown','round_end','reconnecting'].includes(stage)){
-   stage='reconnecting';showConnection('RECONNECTING TO MATCH…');
+   platformGameplay(false);platformRoom(roomCode,false);stage='reconnecting';showConnection('RECONNECTING TO MATCH…');
   }else{showLobby();status('SERVER ASLEEP OR DISCONNECTED · RETRYING');}
   clientRetries=Math.min(clientRetries+1,5);retryTimer=setTimeout(connect,Math.min(9000,1200*(2**clientRetries)));
  };
@@ -192,23 +519,28 @@ function connect(){
   if(m.t==='ready'){
    ready=true;clientRetries=0;if(m.account)saveToken(m.account);
    $('#netBadge').textContent='CONNECTED';status('CONNECTED · HOST, JOIN OR RANKED QUICK MATCH');buttons();
-   const prior=recoverRoom();
-   if(prior?.code&&prior?.token){resumePending=true;send('resume',prior);}
-   else{const code=new URLSearchParams(location.search).get('room');if(stage==='lobby'&&/^[A-HJ-NP-Z2-9]{6}$/.test(code||'')){history.replaceState(null,'',location.pathname);send('join',{code});}}
+   if(pendingFriendRoom){const code=pendingFriendRoom;pendingFriendRoom='';$('#codeInput').value=code;send('join',{code});}
+   else {const code=new URLSearchParams(location.search).get('room');
+     if(stage==='lobby'&&CG_CODE.test(code||'')){history.replaceState(null,'',location.pathname);send('join',{code});}
+     else {const prior=recoverRoom();
+       if(prior?.code&&prior?.token){resumePending=true;send('resume',prior);}
+       else if(instantHostRequested||new URLSearchParams(location.search).has('instant')){instantHostRequested=false;send('host');}
+     }
+   }
   }
   else if(m.t==='rating'){rankData=m;$('#rankInfo').textContent=`${m.division} · ${m.elo} RP`;$('#rankRecord').textContent=`${m.wins}W / ${m.losses}L · BETA · SERVER MEMORY ONLY`;}
   else if(m.t==='resume_failed'){resumePending=false;showLobby();status('RECONNECT EXPIRED · FIND A NEW MATCH');}
   else if(m.t==='pong'){pingMs=Math.max(0,Math.round(performance.now()-m.sent));$('#netBadge').textContent=`${pingMs}ms · ONLINE`;}
-  else if(m.t==='room_created'){stage='waiting';roomCode=m.code;$('#roomBox').style.display='block';$('#roomCode').textContent=roomCode;$('#roomCaption').textContent='PRIVATE ROOM · SHARE YOUR CODE';status('WAITING FOR SECOND PLAYER…');buttons();}
-  else if(m.t==='searching'){stage='searching';$('#roomBox').style.display='block';$('#roomCode').textContent='••••••';$('#roomCaption').textContent='RANKED QUICK MATCH · MATCHING SIMILAR RATING';status('SEARCHING FOR RANKED OPPONENT…');buttons();}
+  else if(m.t==='room_created'){stage='waiting';roomCode=m.code;platformRoom(roomCode,true);$('#roomBox').style.display='block';$('#roomCode').textContent=roomCode;$('#roomCaption').textContent='PRIVATE ROOM · SHARE YOUR CODE';status('WAITING FOR SECOND PLAYER…');buttons();}
+  else if(m.t==='searching'){platformLeft();stage='searching';$('#roomBox').style.display='block';$('#roomCode').textContent='••••••';$('#roomCaption').textContent='RANKED QUICK MATCH · MATCHING SIMILAR RATING';status('SEARCHING FOR RANKED OPPONENT…');buttons();}
   else if(m.t==='start'){resumePending=false;startVisual(m);}
-  else if(m.t==='round_live'){stage='playing';resetReplay();$('#roundNotice').style.display='none';$('#countdown').style.display='none';}
+  else if(m.t==='round_live'){stage='playing';platformGameplay(true);resetReplay();$('#roundNotice').style.display='none';$('#countdown').style.display='none';}
   else if(m.t==='round_result'){
-   charging=false;stage='round_end';roundWon=m.wins||roundWon;setScore();$('#countdown').style.display='none';
+   charging=false;stage='round_end';platformGameplay(false);roundWon=m.wins||roundWon;setScore();$('#countdown').style.display='none';
    showRound((m.winner===seat?'YOU WIN ROUND ':'OPPONENT WINS ROUND ')+m.round);
   }
   else if(m.t==='replay'){if(stage!=='round_end')return;replayFrames=m.frames;replayStart=performance.now();$('#replayBanner').style.display='block';}
-  else if(m.t==='opponent_wait'){stage='paused';showConnection('OPPONENT DISCONNECTED · 45s RECONNECT WINDOW');}
+  else if(m.t==='opponent_wait'){stage='paused';platformGameplay(false);showConnection('OPPONENT DISCONNECTED · 45s RECONNECT WINDOW');}
   else if(m.t==='opponent_back'){hideConnection();showToast('OPPONENT RECONNECTED');}
   else if(m.t==='state'){
    if(!['playing','countdown','round_end','finished','reconnecting','paused'].includes(stage))return;
@@ -218,14 +550,14 @@ function connect(){
    state=m;snapshotAt=performance.now();round=m.round;roundWon=m.wins||roundWon;liveArena=m.arena||liveArena;roomRanked=!!m.ranked;
    $('#hp1').style.width=(m.players[0].hp/m.players[0].max*100)+'%';$('#hp2').style.width=(m.players[1].hp/m.players[1].max*100)+'%';
    $('#power1').style.width=(m.players[0].charge*100)+'%';$('#power2').style.width=(m.players[1].charge*100)+'%';setScore();
-   if(m.phase==='countdown'){stage='countdown';resetReplay();$('#countdown').style.display='block';$('#countdown').textContent=String(Math.max(1,Math.ceil(m.countdown/1000)));}
-   else if(m.phase==='playing'&&stage==='countdown'){stage='playing';$('#countdown').style.display='none';}
-   else if(m.phase==='round_end'&&stage!=='finished'){stage='round_end';$('#countdown').style.display='none';}
-   else if(m.phase==='paused'){stage='paused';showConnection('OPPONENT DISCONNECTED · RECONNECTING');}
+   if(m.phase==='countdown'){stage='countdown';platformGameplay(false);resetReplay();$('#countdown').style.display='block';$('#countdown').textContent=String(Math.max(1,Math.ceil(m.countdown/1000)));}
+   else if(m.phase==='playing'&&stage==='countdown'){stage='playing';platformGameplay(true);$('#countdown').style.display='none';}
+   else if(m.phase==='round_end'&&stage!=='finished'){stage='round_end';platformGameplay(false);$('#countdown').style.display='none';}
+   else if(m.phase==='paused'){stage='paused';platformGameplay(false);showConnection('OPPONENT DISCONNECTED · RECONNECTING');}
   }
   else if(m.t==='effect')onEffect(m);
   else if(m.t==='finished'){
-   stage='finished';charging=false;roundWon=m.wins||roundWon;$('#countdown').style.display='none';
+   stage='finished';platformGameplay(false);charging=false;roundWon=m.wins||roundWon;$('#countdown').style.display='none';
    $('#winner').textContent=m.winner===seat?'MATCH WON':'MATCH LOST';
    $('#finishInfo').textContent='FIRST TO THREE · PLAYER '+m.winner+' WINS'+(m.ranked?' · RANKED':'');
    $('#finishedScore').textContent=roundWon.join(' : ');$('#rematch').textContent='NEW BO5 MATCH';$('#rematch').disabled=false;
@@ -233,20 +565,28 @@ function connect(){
   }
   else if(m.t==='rematch_status'){$('#rematch').textContent=m.ready[seat-1]?'WAITING FOR OPPONENT…':'NEW BO5 MATCH';$('#rematch').disabled=!!m.ready[seat-1];}
   else if(m.t==='loadout'){if(m.bow&&m.arrow){selectedBow=m.bow;selectedArrow=m.arrow;updateSelectors();}}
-  else if(m.t==='opponent_left'){showLobby();status('OPPONENT LEFT / RECONNECT EXPIRED · FIND A NEW MATCH');}
-  else if(m.t==='left'){showLobby();status('LEFT ROOM · READY FOR NEXT MATCH');}
+  else if(m.t==='opponent_left'){showLobby();status('OPPONENT LEFT / RECONNECT EXPIRED · FIND A NEW MATCH');finishFriendSwitch();}
+  else if(m.t==='left'){showLobby();status('LEFT ROOM · READY FOR NEXT MATCH');finishFriendSwitch();}
   else if(m.t==='error')status(m.message||'ROOM ERROR');
  };
 }
 
-$('#home').onclick=()=>{send('leave');location.href='index.html';};
+$('#home').onclick=()=>{platformGameplay(false);platformLeft();send('leave');location.href='index.html';};
 $('#host').onclick=()=>{if(ready&&stage==='lobby'){activateSound();send('host');}};
 $('#quick').onclick=()=>{if(ready&&stage==='lobby'){activateSound();send('quick');}};
 $('#joinBtn').onclick=()=>{if(!ready||stage!=='lobby')return;activateSound();const code=$('#codeInput').value.trim().toUpperCase();if(!/^[A-HJ-NP-Z2-9]{6}$/.test(code))return status('ENTER A VALID SIX-CHARACTER CODE');send('join',{code});};
 $('#codeInput').addEventListener('keydown',e=>{if(e.key==='Enter')$('#joinBtn').click();});
 $('#cancelBtn').onclick=()=>{send('leave');showLobby();status('SEARCH CANCELLED');};
 async function copy(text,success){try{await navigator.clipboard.writeText(text);status(success);}catch{status('COPY UNAVAILABLE · SELECT THE CODE ABOVE');}}
-$('#copyCode').onclick=()=>copy(roomCode,'ROOM CODE COPIED');$('#copyLink').onclick=()=>copy(`${location.origin}/online.html?room=${roomCode}`,'INVITE LINK COPIED');
+$('#copyCode').onclick=()=>copy(roomCode,'ROOM CODE COPIED');
+$('#copyLink').onclick=async()=>{
+  if(!CG_CODE.test(roomCode))return status('CREATE A PRIVATE ROOM FIRST');
+  const game=cgGame();let link='';
+  if(game?.inviteLink){try{link=await game.inviteLink({room:roomCode});}catch(e){console.warn('[WHITEOUT Friends] Invite link failed:',e);}}
+  if(!link&&game)return status('CRAZYGAMES INVITE LINK UNAVAILABLE');
+  if(!link)link=`https://whiteout-online.onrender.com/online.html?room=${roomCode}`;
+  copy(link,'INVITE LINK COPIED');
+};
 $('#backResult').onclick=()=>{send('leave');showLobby();status('CHOOSE YOUR NEXT MATCH');};
 $('#rematch').onclick=()=>{if(stage!=='finished')return;send('rematch');$('#rematch').textContent='WAITING FOR OPPONENT…';$('#rematch').disabled=true;};
 function aimBy(delta){aim=clamp(aim+delta,-.3,1.22);send('aim',{value:Math.round(aim*1000)/1000});lastAim=performance.now();}
