@@ -33,6 +33,10 @@ const PLAT=[{id:0,x:120,y:456,w:230,h:32},{id:1,x:650,y:456,w:230,h:32}];
 const rooms=new Map(),quickQueue=[],connections=new Set(),ratings=new Map();
 const GRACE_MS=45000, INTERMISSION_MS=4600, MAX_ROOMS=350;
 const DEFAULT_RATING=1000;
+// Character equipment is cosmetic-only. All values are validated by the server.
+const COSMETICS={helmet:['hood','crest','horns','crown','none'],eyes:['slit','visor','round','cross'],cape:['short','long','split','none']};
+function cosmetics(src){const obj=src&&typeof src==='object'?src:{};return Object.fromEntries(Object.entries(COSMETICS).map(([k,choices])=>[k,choices.includes(obj[k])?obj[k]:choices[0]]));}
+
 function rankLabel(elo){return elo>=1400?'GOLD':elo>=1150?'SILVER':'BRONZE';}
 function ratingFor(ws){return ratings.get(ws.account)||{elo:DEFAULT_RATING,wins:0,losses:0,matches:0};}
 function sendRating(ws){const r=ratingFor(ws);send(ws,{t:'rating',...r,division:rankLabel(r.elo),scope:'server-memory-beta'});}
@@ -51,7 +55,7 @@ function arenaParts(room){return [...arenaPlatforms(room),...(room.arena?.barrie
 const chars='ABCDEFGHJKLMNPQRSTUVWXYZ23456789';
 function validItem(value,list,def){return typeof value==='string'&&Object.hasOwn(list,value)?value:def;}
 function validSkin(v){return typeof v==='string'&&/^[a-z0-9_-]{1,25}$/.test(v)?v:'whiteout';}
-const alive=ws=>ws&&ws.readyState===WebSocket.OPEN;
+const alive=ws=>ws&&!ws.isBot&&ws.readyState===WebSocket.OPEN;
 function send(ws,payload){if(alive(ws)&&ws.bufferedAmount<512_000)try{ws.send(JSON.stringify(payload));}catch{}}
 function message(room,payload){for(const ws of room.clients)send(ws,payload);}
 const server=http.createServer((req,res)=>{
@@ -59,13 +63,13 @@ const server=http.createServer((req,res)=>{
  if(req.method!=='GET'){res.writeHead(405);return res.end('Method not allowed');}
  if(url.pathname==='/health'){
   res.writeHead(200,{'content-type':'application/json; charset=utf-8','cache-control':'no-store'});
-  return res.end(JSON.stringify({ok:true,version:'4.1-PLATFORM-FIX',rooms:rooms.size,quickWaiting:quickQueue.filter(r=>r.phase==='waiting').length}));
+  return res.end(JSON.stringify({ok:true,version:'4.8-COMBAT-EVOLUTION',rooms:rooms.size,quickWaiting:quickQueue.filter(r=>r.phase==='waiting').length}));
  }
- const allowed={'/':'index.html','/index.html':'index.html','/online':'online.html','/online.html':'online.html'};
+ const allowed={'/':'index.html','/index.html':'index.html','/online':'online.html','/online.html':'online.html','/cloud-save.js':'cloud-save.js'};
  if(!allowed[url.pathname]){res.writeHead(404);return res.end('Not Found');}
  fs.readFile(path.join(__dirname,allowed[url.pathname]),(err,data)=>{
   if(err){res.writeHead(500);return res.end('File unavailable');}
-  res.writeHead(200,{'content-type':'text/html; charset=utf-8','cache-control':'no-store','x-content-type-options':'nosniff'});res.end(data);
+  res.writeHead(200,{'content-type':url.pathname==='/cloud-save.js'?'application/javascript; charset=utf-8':'text/html; charset=utf-8','cache-control':'no-store','x-content-type-options':'nosniff'});res.end(data);
  });
 });
 const wss=new WebSocketServer({server,path:'/ws',maxPayload:4096,perMessageDeflate:false});
@@ -84,7 +88,7 @@ function resume(ws,m){const r=rooms.get(String(m.code||'').toUpperCase()),token=
  if(r.phase==='countdown')r.countdownUntil=Date.now()+3000;
  if(r.phase==='round_end')r.roundEndAt+=Date.now()-r.disconnectAt;
  r.missingSeat=-1;r.disconnectAt=0;r.last=Date.now();
- r.clients.forEach((c,j)=>send(c,{t:'start',code:r.code,seat:j+1,round:r.round,wins:r.wins,loadouts:r.loadouts,token:r.tokens[j],ranked:r.quick,resumed:true}));
+ r.clients.forEach((c,j)=>send(c,{t:'start',code:r.code,seat:j+1,round:r.round,wins:r.wins,loadouts:r.loadouts,token:r.tokens[j],ranked:r.quick,bot:r.botMode,botDifficulty:r.botDifficulty,resumed:true}));
  message(r,{t:'opponent_back'});broadcast(r);
 }
 
@@ -106,18 +110,53 @@ function newRoom(ws,quick){
  const r={code:code(),clients:[ws,null],phase:'waiting',quick,created:Date.now(),last:Date.now(),round:0,wins:[0,0],rematch:[false,false],countdownUntil:0,
  arena:makeArena(),players:[],aim:[.12,.12],chargeAt:[null,null],lastShot:[0,0],
  loadouts:[{...ws.loadout},{skin:'whiteout',bow:'ash',arrow:'basic'}],arrows:[],events:[],eventId:1,nextArrow:1,elapsed:0,winner:null,
- history:[],replaySent:false,frameAcc:0,roundEndAt:0,disconnectAt:0,missingSeat:-1,tokens:[crypto.randomBytes(20).toString('hex'),crypto.randomBytes(20).toString('hex')],ratingCommitted:false};
+ history:[],replaySent:false,frameAcc:0,roundEndAt:0,disconnectAt:0,missingSeat:-1,tokens:[crypto.randomBytes(20).toString('hex'),crypto.randomBytes(20).toString('hex')],ratingCommitted:false,botMode:false,botDifficulty:null,botNextAction:0,botReleaseAt:0};
  r.players=[human(0,r),human(1,r)];
  rooms.set(r.code,r);ws.room=r;ws.seat=0;
  if(quick){quickQueue.push(r);send(ws,{t:'searching',message:'Searching for another player…'});}else send(ws,{t:'room_created',code:r.code,seat:1});
  return r;
 }
 function begin(r,ws){cleanQueue(r);r.clients[1]=ws;ws.room=r;ws.seat=1;r.loadouts[1]={...ws.loadout};startRound(r);}
+// AI duels are unranked and share the identical server projectile/ragdoll rules.
+function beginBot(ws,difficulty){
+ const level=['easy','normal','hard'].includes(difficulty)?difficulty:'normal';
+ const r=newRoom(ws,false);if(!r)return;
+ r.botMode=true;r.botDifficulty=level;
+ const bot={isBot:true,room:r,seat:1,account:null,loadout:{skin:level==='hard'?'volt':level==='easy'?'carbon':'obsidian',bow:level==='hard'?'storm':'ash',arrow:level==='hard'?'frost':'basic',cosmetics:{helmet:level==='hard'?'crown':'horns',eyes:'visor',cape:'split'}},send(){}};
+ begin(r,bot);send(ws,{t:'bot_info',difficulty:level});
+}
+function botAim(room,held){
+ const conf={easy:.20,normal:.085,hard:.032}[room.botDifficulty]||.085;
+ const bot=room.players[1],target=room.players[0],start=bot.p.chest;
+ const aimHead=room.botDifficulty==='hard'&&Math.random()<.32;
+ const yy=(aimHead?target.p.head:target.p.chest).y;
+ const dist=Math.abs(start.x-31-target.p.chest.x),speed=850+365*clamp(held/1050,.18,1);
+ let best=.12,bestError=Infinity;
+ for(let a=-.30;a<=1.22;a+=.012){const travel=dist/(Math.max(1,Math.cos(a))*speed);
+  const predicted=start.y-7-Math.sin(a)*speed*travel+465*travel*travel;
+  const error=Math.abs(predicted-yy);
+  if(error<bestError){best=a;bestError=error;}
+ }
+ return clamp(best+rand(-conf,conf),-.3,1.22);
+}
+function botTick(r,now){
+ if(!r.botMode||r.phase!=='playing')return;
+ const bot=r.players[1];if(!bot||bot.dead)return;
+ if(r.chargeAt[1]!==null){
+  if(now>=r.botReleaseAt){makeShot(r,1);r.botNextAction=now+{easy:1550,normal:1050,hard:650}[r.botDifficulty];}
+  return;
+ }
+ if(now<r.botNextAction||bot.stun>.1)return;
+ const held= {easy:650,normal:850,hard:990}[r.botDifficulty];
+ r.aim[1]=botAim(r,held);
+ r.chargeAt[1]=now;r.botReleaseAt=now+held;
+}
+
 function startRound(r){
  r.round++;r.phase='countdown';r.countdownUntil=Date.now()+3000;r.last=Date.now();r.elapsed=0;r.winner=null;r.matchWinner=null;
  r.arena=makeArena(r.arena?.theme);r.players=[human(0,r),human(1,r)];r.chargeAt=[null,null];r.arrows=[];r.events=[];
- r.history=[];r.frameAcc=0;r.replaySent=false;r.rematch=[false,false];r.lastShot=[0,0];r.aim=[.12,.12];
- r.clients.forEach((ws,i)=>send(ws,{t:'start',code:r.code,seat:i+1,round:r.round,wins:r.wins,loadouts:r.loadouts,token:r.tokens[i],ranked:r.quick,arena:r.arena}));broadcast(r);
+ r.history=[];r.frameAcc=0;r.replaySent=false;r.rematch=[false,false];r.lastShot=[0,0];r.aim=[.12,.12];r.botNextAction=Date.now()+1000;r.botReleaseAt=0;
+ r.clients.forEach((ws,i)=>send(ws,{t:'start',code:r.code,seat:i+1,round:r.round,wins:r.wins,loadouts:r.loadouts,token:r.tokens[i],ranked:r.quick,bot:r.botMode,botDifficulty:r.botDifficulty,arena:r.arena}));broadcast(r);
 }
 function capture(r){
  r.history.push({p:r.players.map(p=>NODE.map(k=>[Math.round(p.p[k].x),Math.round(p.p[k].y)])),
@@ -164,8 +203,8 @@ function impulse(p,hx,hy,vx,mult,region='torso'){
  const sign=Math.sign(vx)||1,t=rand(-.75,.75),floor=p.p.hip.y+p.h*.4;
  for(const key of NODE){const n=p.p[key],level=clamp((floor-n.y)/p.h,0,1),proximity=clamp(1-D(n.x-hx,n.y-hy)/(p.h*1.05),.12,1);
   const arm=/^(lS|rS|lE|rE|lH|rH)$/.test(key),leg=/^(lHip|rHip|lK|rK|lF|rF)$/.test(key);
-  const regional=(region==='arm'&&arm||region==='leg'&&leg)?2.2:1;
-  const ux=(sign*rand(.6,1.9)*mult*(1+level*3.8)+t*level*5)*proximity*regional;
+  const regional=(region==='arm'&&arm||region==='leg'&&leg)?2.65:region==='head'&&['head','neck','lS','rS'].includes(key)?2.1:1;
+  const ux=(sign*rand(.6,1.9)*mult*(1+level*3.8)+t*level*6.2)*proximity*regional;
   const uy=(rand(-1.8,.7)*mult-Math.max(0,level*.7))*proximity*regional;
   n.ox=n.x-ux;n.oy=n.y-uy;
  }
@@ -239,7 +278,7 @@ function ragdoll(room,ch,dt){
  if(!ch.down&&!ch.dead)return;
  const platform=arenaPlatforms(room)[ch.side];
  for(const name of NODE){const n=ch.p[name],vx=(n.x-n.ox)*.99,vy=(n.y-n.oy)*.99;n.ox=n.x;n.oy=n.y;n.x+=vx;n.y+=vy+930*1.3*dt*dt;}
- for(let pass=0;pass<7;pass++){
+ for(let pass=0;pass<10;pass++){
   for(const e of ch.links){const a=ch.p[e.a],b=ch.p[e.b],dx=b.x-a.x,dy=b.y-a.y,len=D(dx,dy)||1,q=(len-e.len)/len*.49;a.x+=dx*q;a.y+=dy*q;b.x-=dx*q;b.y-=dy*q;}
   for(const name of NODE){const n=ch.p[name],radius=name==='head'?12:3;
    for(const pf of arenaPlatforms(room))if(n.x>pf.x-radius*.3&&n.x<pf.x+pf.w+radius*.3&&n.y>pf.y-radius&&n.y<pf.y+pf.h+7&&n.oy<=pf.y+5){n.y=pf.y-radius;n.x+=(n.ox-n.x)*.035;}
@@ -341,9 +380,9 @@ function tick(r,dt){
 function broadcast(r){
  if(!['countdown','playing','round_end','finished','paused'].includes(r.phase))return;
  const now=Date.now();
- const payload={t:'state',version:4,code:r.code,phase:r.phase,round:r.round,wins:r.wins,ranked:r.quick,arena:r.arena,
+ const payload={t:'state',version:4,code:r.code,phase:r.phase,round:r.round,wins:r.wins,ranked:r.quick,bot:r.botMode,botDifficulty:r.botDifficulty,arena:r.arena,
  winner:r.winner,serverTime:now,countdown:r.phase==='countdown'?Math.max(0,r.countdownUntil-now):0,
- players:r.players.map((p,i)=>({hp:Math.round(p.hp*10)/10,max:240,skin:r.loadouts[i].skin,bow:r.loadouts[i].bow,arrow:r.loadouts[i].arrow,
+ players:r.players.map((p,i)=>({hp:Math.round(p.hp*10)/10,max:240,skin:r.loadouts[i].skin,bow:r.loadouts[i].bow,arrow:r.loadouts[i].arrow,cosmetics:r.loadouts[i].cosmetics||cosmetics(),
  aim:r.aim[i],charge:r.chargeAt[i]===null?0:clamp((now-r.chargeAt[i])/1050,0,1),down:p.down,dead:p.dead,stunned:p.stun>0,hitRegion:p.hitRegion,fx:Object.keys(p.effects),
  nodes:NODE.map(k=>[Math.round(p.p[k].x*10)/10,Math.round(p.p[k].y*10)/10])})),
  arrows:r.arrows.map(a=>({id:a.id,x:Math.round(a.x*10)/10,y:Math.round(a.y*10)/10,angle:a.angle,owner:a.owner,bounced:a.afterBounce,type:a.arrowType,embedded:a.state==='body'})),
@@ -355,6 +394,7 @@ function handle(ws,m){
  if(!m||typeof m!=='object'||typeof m.t!=='string')return;
  if(m.t==='resume'){resume(ws,m);return;}
  if(m.t==='host'){newRoom(ws,false);return;}
+ if(m.t==='bot_match'){beginBot(ws,m.difficulty);return;}
  if(m.t==='join'){
   const key=String(m.code||'').trim().toUpperCase();if(!/^[A-HJ-NP-Z2-9]{6}$/.test(key))return send(ws,{t:'error',message:'Enter a valid six-character code.'});
   const r=rooms.get(key);if(!r||r.phase!=='waiting'||!alive(r.clients[0]))return send(ws,{t:'error',message:'Room unavailable or full.'});
@@ -378,13 +418,13 @@ function handle(ws,m){
   const locked=r&&['playing','countdown','round_end'].includes(r.phase);
   const bow=locked?ws.loadout.bow:validItem(m.bow,BOWS,ws.loadout.bow);
   const arrow=validItem(m.arrow,ARROWS,ws.loadout.arrow);
-  ws.loadout={...ws.loadout,bow,arrow,skin:locked?ws.loadout.skin:validSkin(m.skin||ws.loadout.skin)};
+  ws.loadout={...ws.loadout,bow,arrow,skin:locked?ws.loadout.skin:validSkin(m.skin||ws.loadout.skin),cosmetics:locked?ws.loadout.cosmetics:cosmetics(m.cosmetics||ws.loadout.cosmetics)};
   if(r&&r.phase!=='closed'){r.loadouts[ws.seat]={...ws.loadout};}
   send(ws,{t:'loadout',...ws.loadout});return;
  }
  if(m.t==='rematch'){
   const r=ws.room;if(!r||r.phase!=='finished'||r.clients[ws.seat]!==ws)return;
-  r.rematch[ws.seat]=true;message(r,{t:'rematch_status',ready:r.rematch,wins:r.wins});
+  r.rematch[ws.seat]=true;if(r.botMode)r.rematch[1]=true;message(r,{t:'rematch_status',ready:r.rematch,wins:r.wins});
   if(r.rematch.every(Boolean)){r.wins=[0,0];r.round=0;r.ratingCommitted=false;startRound(r);}return;
  }
  const r=ws.room;if(!r||r.phase!=='playing'||r.clients[ws.seat]!==ws)return;
@@ -394,15 +434,15 @@ function handle(ws,m){
  if(m.t==='shoot'){makeShot(r,p);return;}
 }
 wss.on('connection',ws=>{
- connections.add(ws);ws.isAlive=true;ws.room=null;ws.seat=-1;ws.loadout={skin:'whiteout',bow:'ash',arrow:'basic'};
+ connections.add(ws);ws.isAlive=true;ws.room=null;ws.seat=-1;ws.loadout={skin:'whiteout',bow:'ash',arrow:'basic',cosmetics:cosmetics()};
  send(ws,{t:'connected',message:'Connected to WHITEOUT Classic Physics server.'});
  ws.on('pong',()=>ws.isAlive=true);
  ws.on('message',raw=>{let m;try{m=JSON.parse(raw.toString());}catch{return;}
   if(m?.t==='hello'){
    const token=String(m.account||'');ws.account=/^[a-f0-9]{64}$/.test(token)&&ratings.has(token)?token:crypto.randomBytes(32).toString('hex');
    if(!ratings.has(ws.account))ratings.set(ws.account,{elo:DEFAULT_RATING,wins:0,losses:0,matches:0});
-   ws.loadout={skin:validSkin(m.skin),bow:validItem(m.bow,BOWS,'ash'),arrow:validItem(m.arrow,ARROWS,'basic')};
-   send(ws,{t:'ready',version:'4.1-PLATFORM-FIX',account:ws.account});sendRating(ws);return;}
+   ws.loadout={skin:validSkin(m.skin),bow:validItem(m.bow,BOWS,'ash'),arrow:validItem(m.arrow,ARROWS,'basic'),cosmetics:cosmetics(m.cosmetics)};
+   send(ws,{t:'ready',version:'4.8-COMBAT-EVOLUTION',account:ws.account});sendRating(ws);return;}
   if(!ws.account)return;handle(ws,m);
  });
  ws.on('close',()=>{connections.delete(ws);detach(ws,true);});ws.on('error',()=>{});
@@ -414,7 +454,7 @@ setInterval(()=>{
   if(r.phase==='waiting'&&now-r.created>15*60_000){for(const ws of r.clients){if(ws){send(ws,{t:'error',message:'Room timed out.'});ws.room=null;}}cleanQueue(r);rooms.delete(r.code);continue;}
   if(r.phase==='paused'&&now-r.disconnectAt>GRACE_MS){const winner=r.missingSeat===0?2:1;
    message(r,{t:'opponent_left',message:'Opponent did not reconnect in time.'});closeRoom(r,null);continue;}
-  if(r.phase==='playing'||r.phase==='round_end'||r.phase==='finished'&&now-r.last<3800){for(let sub=0;sub<3;sub++)tick(r,1/60);}
+  if(r.phase==='playing'||r.phase==='round_end'||r.phase==='finished'&&now-r.last<3800){botTick(r,now);for(let sub=0;sub<3;sub++)tick(r,1/60);}
   if(r.phase==='round_end'&&now>=r.roundEndAt){
    if(r.matchWinner){r.phase='finished';r.last=now;message(r,{t:'finished',winner:r.matchWinner,wins:r.wins,round:r.round,ranked:r.quick});}
    else startRound(r);
@@ -425,5 +465,5 @@ setInterval(()=>{
 },50);
 
 setInterval(()=>{for(const ws of connections){if(!ws.isAlive){ws.terminate();continue;}ws.isAlive=false;ws.ping();}},30_000);
-server.listen(PORT,'0.0.0.0',()=>console.log(`WHITEOUT ONLINE v4.1 PLATFORM FIX listening on ${PORT}`));
+server.listen(PORT,'0.0.0.0',()=>console.log(`WHITEOUT ONLINE v4.8 COMBAT EVOLUTION listening on ${PORT}`));
 module.exports={server,rooms,PLAT,BOWS,ARROWS,NODE,makeArena,sweptClash,ratings};
