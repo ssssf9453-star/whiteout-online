@@ -27,6 +27,8 @@ const ARROWS={
 const NODE=['head','neck','chest','belly','hip','lS','rS','lE','rE','lH','rH','lHip','rHip','lK','rK','lF','rF'];
 const BONES=[['head','neck'],['neck','chest'],['chest','belly'],['belly','hip'],['chest','lS'],['chest','rS'],['lS','lE'],['lE','lH'],['rS','rE'],['rE','rH'],['hip','lHip'],['hip','rHip'],['lHip','lK'],['lK','lF'],['rHip','rK'],['rK','rF'],['lS','rS'],['lHip','rHip'],['lS','lHip'],['rS','rHip']];
 const POSE={head:[0,-.94],neck:[0,-.785],chest:[0,-.69],belly:[0,-.51],hip:[0,-.40],lS:[-.125,-.73],rS:[.125,-.73],lE:[-.23,-.59],rE:[.23,-.59],lH:[-.245,-.42],rH:[.245,-.42],lHip:[-.082,-.38],rHip:[.082,-.38],lK:[-.105,-.19],rK:[.105,-.19],lF:[-.15,0],rF:[.15,0]};
+// Foot centers are six world units above the slab so rounded strokes rest on its top.
+const FOOT_CLEARANCE=6;
 const PLAT=[{id:0,x:120,y:456,w:230,h:32},{id:1,x:650,y:456,w:230,h:32}];
 const rooms=new Map(),quickQueue=[],connections=new Set(),ratings=new Map();
 const GRACE_MS=45000, INTERMISSION_MS=4600, MAX_ROOMS=350;
@@ -57,7 +59,7 @@ const server=http.createServer((req,res)=>{
  if(req.method!=='GET'){res.writeHead(405);return res.end('Method not allowed');}
  if(url.pathname==='/health'){
   res.writeHead(200,{'content-type':'application/json; charset=utf-8','cache-control':'no-store'});
-  return res.end(JSON.stringify({ok:true,version:'4.0-BO5',rooms:rooms.size,quickWaiting:quickQueue.filter(r=>r.phase==='waiting').length}));
+  return res.end(JSON.stringify({ok:true,version:'4.1-PLATFORM-FIX',rooms:rooms.size,quickWaiting:quickQueue.filter(r=>r.phase==='waiting').length}));
  }
  const allowed={'/':'index.html','/index.html':'index.html','/online':'online.html','/online.html':'online.html'};
  if(!allowed[url.pathname]){res.writeHead(404);return res.end('Not Found');}
@@ -87,9 +89,16 @@ function resume(ws,m){const r=rooms.get(String(m.code||'').toUpperCase()),token=
 }
 
 function human(side,room){
- const platform=arenaPlatforms(room)[side],x=platform.x+platform.w/2,y=platform.y,h=104,p={};
+ const platform=arenaPlatforms(room)[side],x=platform.x+platform.w/2,y=platform.y-FOOT_CLEARANCE,h=104,p={};
  for(const k of NODE){const [ox,oy]=POSE[k],px=x+ox*h,py=y+oy*h;p[k]={x:px,y:py,ox:px,oy:py};}
  return {side,p,h,hp:240,dead:false,down:false,stun:0,downSince:0,hitRegion:null,inv:0,shootT:0,effects:{},links:BONES.map(([a,b])=>({a,b,len:D(p[a].x-p[b].x,p[a].y-p[b].y)}))};
+}
+// A living upright archer never walks, slides, hovers or sinks. The only
+// movement permitted is the temporary ragdoll response after being hit.
+function plantUpright(room,ch){
+ if(!ch||ch.dead||ch.down)return;
+ const pf=arenaPlatforms(room)[ch.side],x=pf.x+pf.w/2,feetY=pf.y-FOOT_CLEARANCE;
+ for(const k of NODE){const n=ch.p[k],pose=POSE[k];n.x=n.ox=x+pose[0]*ch.h;n.y=n.oy=feetY+pose[1]*ch.h;}
 }
 function newRoom(ws,quick){
  detach(ws);
@@ -241,7 +250,7 @@ function ragdoll(room,ch,dt){
  if(!ch.dead&&ch.down&&room.elapsed-ch.downSince>3.0){const ease=clamp((room.elapsed-ch.downSince-3)*1.8,0,1);
   const px=platform.x+platform.w/2;
   for(const name of NODE){const [ox,oy]=POSE[name],n=ch.p[name];n.x+=(px+ox*ch.h-n.x)*ease*.19;n.y+=(platform.y+oy*ch.h-n.y)*ease*.19;n.ox=n.x;n.oy=n.y;}
-  if(ease>=1){ch.down=false;ch.stun=0;}
+  if(ease>=1){ch.down=false;ch.stun=0;plantUpright(room,ch);}
  }
 }
 function sweptClash(a,b){
@@ -265,7 +274,7 @@ function tick(r,dt){
   return;
  }
  for(let i=0;i<2;i++){
-  const p=r.players[i];p.stun=Math.max(0,p.stun-dt);
+  const p=r.players[i];plantUpright(r,p);p.stun=Math.max(0,p.stun-dt);
   for(const [name,e] of Object.entries(p.effects)){
    if(e.left<=0){delete p.effects[name];continue;}
    e.left-=dt;e.tick-=dt;
@@ -393,7 +402,7 @@ wss.on('connection',ws=>{
    const token=String(m.account||'');ws.account=/^[a-f0-9]{64}$/.test(token)&&ratings.has(token)?token:crypto.randomBytes(32).toString('hex');
    if(!ratings.has(ws.account))ratings.set(ws.account,{elo:DEFAULT_RATING,wins:0,losses:0,matches:0});
    ws.loadout={skin:validSkin(m.skin),bow:validItem(m.bow,BOWS,'ash'),arrow:validItem(m.arrow,ARROWS,'basic')};
-   send(ws,{t:'ready',version:'4.0-BO5',account:ws.account});sendRating(ws);return;}
+   send(ws,{t:'ready',version:'4.1-PLATFORM-FIX',account:ws.account});sendRating(ws);return;}
   if(!ws.account)return;handle(ws,m);
  });
  ws.on('close',()=>{connections.delete(ws);detach(ws,true);});ws.on('error',()=>{});
@@ -416,5 +425,5 @@ setInterval(()=>{
 },50);
 
 setInterval(()=>{for(const ws of connections){if(!ws.isAlive){ws.terminate();continue;}ws.isAlive=false;ws.ping();}},30_000);
-server.listen(PORT,'0.0.0.0',()=>console.log(`WHITEOUT ONLINE v4 BO5 listening on ${PORT}`));
+server.listen(PORT,'0.0.0.0',()=>console.log(`WHITEOUT ONLINE v4.1 PLATFORM FIX listening on ${PORT}`));
 module.exports={server,rooms,PLAT,BOWS,ARROWS,NODE,makeArena,sweptClash,ratings};
