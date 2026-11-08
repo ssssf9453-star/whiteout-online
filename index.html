@@ -506,7 +506,37 @@ button:focus-visible{outline:2px solid var(--ui-amber-hi)!important;outline-offs
 <div class="resultStat"><small>COINS EARNED</small><strong id="resultCoins">0</strong></div></div>
 <p id="resultChallenge">Challenge result</p><div class="overlayActions"><button class="flatBtn" id="resultReplay">REPLAY</button><button class="flatBtn dark" id="resultHome">HOME</button></div>
 </section></div>
+
 <script src="cloud-save.js"></script>
+<script>
+if (!window.WHITEOUT_SAVE) {
+  window.WHITEOUT_SAVE = {
+    mode: 'local',
+    ready: Promise.resolve(),
+    getGame() {
+      try {
+        return localStorage.getItem('whiteout_save_v1');
+      } catch {
+        return null;
+      }
+    },
+    setGame(value) {
+      try {
+        localStorage.setItem('whiteout_save_v1', value);
+        return true;
+      } catch {
+        return false;
+      }
+    },
+    updateIndicators() {
+      document.querySelectorAll('[data-whiteout-save-status]').forEach(el => {
+        el.textContent = 'LOCAL SAVE';
+      });
+    }
+  };
+}
+</script>
+
 <script>
 (async()=>{'use strict';
 await window.WHITEOUT_SAVE.ready;
