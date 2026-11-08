@@ -413,6 +413,24 @@ button:focus-visible,input:focus-visible{outline:2px solid white;outline-offset:
 @media(max-width:650px){#topBar .brand{font-size:17px!important}#topBar{padding:6px!important}#muteSfx{font-size:9px;padding:7px!important;min-height:33px}#home{font-size:9px!important;padding:7px!important}#v48Coach{bottom:21%!important;max-width:72vw!important}#matchCenter:before{font-size:9px!important}}
 @media(max-height:590px){#v48Coach{bottom:12%!important;padding:7px!important}#roundNotice{top:22%!important}}
 @media(prefers-reduced-motion:reduce){#v48Coach,.duelHead,.battleArrow{animation:none!important;transition:none!important}}
+
+/* V4.9 nightfall visual pass (UI/characters/background ONLY) */
+#lobby{background:rgba(4,10,19,.91)!important}
+#panel{background:linear-gradient(135deg,#10243a,#07111e)!important;border:1px solid #5b91b2!important;box-shadow:0 25px 85px #0009!important}
+#panel h1{font-family:Impact,'Arial Narrow',Arial,sans-serif!important;font-style:italic;letter-spacing:.03em!important;text-shadow:0 4px 0 #081322}
+#host.big{background:linear-gradient(105deg,#ffad48,#e96b29)!important;color:#181725!important;border:1px solid #ffd196!important}
+#quick.big,#botMatch.big{background:linear-gradient(105deg,#299dbc,#135879)!important;border:1px solid #83ddf6!important;color:#f3fcff!important}
+#botDifficulty,#codeInput,#loadout select{background:#0c2336!important;border-color:#3c7b9e!important}
+#lobbyPreview{background:radial-gradient(ellipse at 50% 0,#21557566,#091725)!important;border-color:#497b9a!important}
+#status{background:#0d293c!important;border-left:3px solid #5ce8f1!important}
+#battleUi .duelHead{background:linear-gradient(95deg,#071a2bef,#132e48dc)!important;border:1px solid #4d90b3!important;border-top:3px solid #56e2ff!important;box-shadow:0 8px 25px #0309159c!important}
+#battleUi .duelHead:last-child{border-color:#a76643!important;border-top-color:#ffa34d!important}
+#matchCenter{background:#0a1a2bf0!important;border:1px solid #477c98!important;box-shadow:0 8px 25px #030a1590!important}
+#battleRoom,#battleArrows{background:#071523d9!important;border-color:#4683a1!important}
+#finishedPanel{background:linear-gradient(125deg,#193047,#090f1b)!important;border-color:#80b7d5!important}
+#topBar .brand{font-style:italic;letter-spacing:.06em;color:#f4fbff!important;text-shadow:0 4px 0 #081622}
+@media(max-width:640px){#panel{box-shadow:none!important}#battleUi .duelHead{padding:5px 7px!important}}
+
 </style></head><body>
 <div id="syncSplash" role="status" aria-live="polite" style="position:fixed;inset:0;z-index:99;display:flex;flex-direction:column;gap:12px;align-items:center;justify-content:center;background:#181a1d;color:#e9e9e9;font:900 clamp(24px,4vw,40px) Arial,sans-serif;letter-spacing:.16em">WHITEOUT<span style="font:700 11px Arial,sans-serif;letter-spacing:.18em;color:#aeb5b8">CHECKING SAVED PROGRESS…</span></div>
 <canvas id="arena" aria-label="WHITEOUT multiplayer archery battlefield"></canvas>
@@ -774,13 +792,13 @@ function skinHead(x,y,r,skin){const s=SKINS[skin]||SKINS.whiteout,[fill,edge,sha
 }
 
 const ECLIPSE_SKINS={
- whiteout:['#dde9f9','#40e4ff','#132b41'],obsidian:['#34394b','#ff8b30','#111521'],chrome:['#dbe8f0','#9defff','#536377'],ghost:['#dee5f2','#b3bcff','#314257'],
+ whiteout:['#1b2835','#5be0ff','#0a1523'],obsidian:['#34394b','#ff8b30','#111521'],chrome:['#dbe8f0','#9defff','#536377'],ghost:['#dee5f2','#b3bcff','#314257'],
  carbon:['#535d6d','#ffb168','#242b38'],glitch:['#e2e8fc','#ff4cc5','#252140'],marble:['#ecebf9','#b1a0fa','#41405f'],specter:['#a2b5cd','#77cfff','#303c50'],
  hollow:['#1c2631','#e26cfa','#0d1727'],iron:['#adb6c1','#ffc166','#4b5260'],angel:['#fafcff','#ffe5a1','#657183'],phantom:['#68768a','#a18cff','#28283f'],
  frost:['#ceeffb','#41e4fb','#284e6a'],volt:['#deedff','#ffec5d','#2b405b'],crystal:['#bbd9e8','#78f7ff','#315268']};
 function poly(pts,col,strokeCol,lineW=1){ctx.beginPath();pts.forEach(([x,y],i)=>i?ctx.lineTo(x,y):ctx.moveTo(x,y));ctx.closePath();ctx.fillStyle=col;ctx.fill();if(strokeCol){ctx.strokeStyle=strokeCol;ctx.lineWidth=lineW;ctx.stroke();}}
 function operatorCosmetics(i,body,nodes,colors){
- const c=body?.cosmetics||{helmet:'hood',eyes:'slit',cape:'short'},head=joint(nodes,'head'),neck=joint(nodes,'neck'),hip=joint(nodes,'hip'),ls=joint(nodes,'lS'),rs=joint(nodes,'rS');
+ const c=body?.cosmetics||{helmet:'none',eyes:'slit',cape:'short'},head=joint(nodes,'head'),neck=joint(nodes,'neck'),hip=joint(nodes,'hip'),ls=joint(nodes,'lS'),rs=joint(nodes,'rS');
  const tint=colors[1],mat=colors[2],dir=i===0?-1:1;
  ctx.save();ctx.lineJoin='round';
  if(c.cape!=='none'){
@@ -820,7 +838,7 @@ function eclipseFighter(i,body,nodes){
  const tilt=Math.atan2(neck.y-head.y,neck.x-head.x)-Math.PI/2;
  ctx.translate(head.x,head.y);ctx.rotate(tilt);ctx.shadowColor=c[1];ctx.shadowBlur=4;
  ctx.beginPath();ctx.arc(0,0,13.4,0,Math.PI*2);ctx.fillStyle=c[2];ctx.fill();ctx.strokeStyle=c[1];ctx.lineWidth=2;ctx.stroke();
- if((body?.cosmetics?.eyes||'slit')==='slit'){poly([[-11,-3],[-2,-1],[0,2],[-8,4]],c[1]);poly([[11,-3],[2,-1],[0,2],[8,4]],c[1]);}
+ if((body?.cosmetics?.eyes||'slit')==='slit'){const eyeFill=i===0?'#f4fdff':'#ffd4a7';poly([[-10,-4],[-2,-1],[0,1],[-7,3]],eyeFill);poly([[10,-4],[2,-1],[0,1],[7,3]],eyeFill);}
  stroke(-3,8,3,8,1.4,c[0]);ctx.restore();operatorCosmetics(i,body,nodes,c);
 }
 
@@ -877,28 +895,42 @@ function drawEffects(body,nodes,now){if(!body?.fx)return;const chest=joint(nodes
 // QUALITY PASS — arena depth and feedback are renderer-only, never client physics.
 let damageFloaters=[],impactFlash=0;
 function drawArenaDepth(now){
- const moonX=507,moonY=203,moonR=128;
- const aura=ctx.createRadialGradient(moonX,moonY,moonR*.2,moonX,moonY,moonR*2.3);
- aura.addColorStop(0,'rgba(40,128,173,.14)');aura.addColorStop(.55,'rgba(34,88,125,.09)');aura.addColorStop(1,'rgba(0,0,0,0)');
- ctx.fillStyle=aura;ctx.fillRect(0,0,1000,600);
- ctx.beginPath();ctx.arc(moonX,moonY,moonR,0,Math.PI*2);ctx.fillStyle='#0a1827';ctx.fill();
- ctx.strokeStyle='#4e9dc249';ctx.lineWidth=3;ctx.stroke();
- const columns=[[55,336,37,164],[201,310,18,132],[780,292,35,185],[933,323,25,157]];
- for(const [x,y,w,h] of columns){
-  ctx.fillStyle='#142b3b70';ctx.fillRect(x,y,w,h);ctx.fillStyle='#29435566';ctx.fillRect(x-5,y-5,w+10,10);
-  ctx.fillStyle='#06132188';ctx.fillRect(x+8,y+22,Math.max(4,w*.20),h*.58);
+ // NIGHTFALL / SNOWFIELD — no external assets, no gameplay collision changes.
+ const b=ctx;
+ const moonX=724,moonY=130,moonR=83;
+ let aura=b.createRadialGradient(moonX,moonY,moonR*.12,moonX,moonY,moonR*2.6);
+ aura.addColorStop(0,'rgba(119,214,255,.20)');aura.addColorStop(.55,'rgba(57,139,188,.10)');aura.addColorStop(1,'rgba(0,0,0,0)');
+ b.fillStyle=aura;b.fillRect(0,0,1000,600);
+ b.fillStyle='#e1eeff';b.beginPath();b.arc(moonX,moonY,moonR,0,Math.PI*2);b.fill();
+ b.fillStyle='#0c1d2e';b.beginPath();b.arc(moonX+25,moonY-13,moonR*.93,0,Math.PI*2);b.fill();
+ // Curved northern-light ribbons, kept behind the foreground play area.
+ for(let band=0;band<3;band++){
+   const y=76+band*25;
+   const g=b.createLinearGradient(0,y,1000,y);
+   g.addColorStop(0,'rgba(36,209,235,0)');g.addColorStop(.25,band%2?'rgba(30,191,216,.07)':'rgba(117,238,217,.11)');g.addColorStop(.65,'rgba(92,214,245,.12)');g.addColorStop(1,'rgba(255,156,76,0)');
+   b.strokeStyle=g;b.lineCap='round';b.lineWidth=21-band*4;
+   b.beginPath();b.moveTo(0,y);b.bezierCurveTo(230,y-45,485,y+55,1000,y-32);b.stroke();
  }
- for(let k=0;k<7;k++){
-  const x=k*170-46,y=415+(k%3)*22;
-  ctx.beginPath();ctx.moveTo(x-110,555);ctx.lineTo(x,y);ctx.lineTo(x+113,555);ctx.closePath();
-  ctx.fillStyle=k%2?'#122b3a52':'#14243388';ctx.fill();
+ function ridge(base,amp,color,phase){
+  b.beginPath();b.moveTo(0,600);
+  for(let i=0;i<=10;i++)b.lineTo(i*100,base-amp*(.25+.52*(1+Math.sin(i*1.3+phase))*.5)-(i%3===0?amp*.4:0));
+  b.lineTo(1000,600);b.closePath();b.fillStyle=color;b.fill();
  }
- // Slow, diffuse drifting smoke far below the action. No motion in the foreground.
- for(let k=0;k<6;k++){
-  const x=(k*216+Math.sin(now*.00019+k)*18),y=525+k%2*25;
-  const fog=ctx.createRadialGradient(x,y,4,x,y,123);
-  fog.addColorStop(0,'rgba(56,113,141,.065)');fog.addColorStop(1,'rgba(56,113,141,0)');
-  ctx.fillStyle=fog;ctx.fillRect(x-124,y-124,248,248);
+ ridge(435,105,'rgba(46,93,121,.23)',.8);ridge(465,66,'rgba(12,43,65,.53)',1.8);ridge(495,75,'rgba(8,26,44,.77)',.3);
+ // Frozen spires and broken citadel, all situated behind playable platforms.
+ for(let k=0;k<8;k++){
+  const x=55+k*136+(k%2)*19, top=285+(k%3)*28, width=21+(k%3)*7;
+  b.fillStyle='rgba(6,22,38,.62)';b.fillRect(x,top,width,500-top);
+  b.fillStyle='rgba(79,145,175,.22)';b.fillRect(x+3,top+11,3,390-top);
+  b.fillStyle='rgba(28,65,88,.64)';b.fillRect(x-5,top-9,width+10,9);
+  b.fillStyle=k%3===0?'rgba(255,150,70,.20)':'rgba(87,209,242,.17)';b.fillRect(x+width-7,top+34,3,65);
+ }
+ // Whisps of ice mist near the bottom, lightweight on mobile.
+ for(let k=0;k<5;k++){
+  const x=130+k*211+Math.sin(now*.00016+k)*13,y=530+(k%2)*19;
+  const fog=b.createRadialGradient(x,y,6,x,y,105);
+  fog.addColorStop(0,'rgba(100,192,226,.09)');fog.addColorStop(1,'rgba(100,192,226,0)');
+  b.fillStyle=fog;b.fillRect(x-106,y-106,212,212);
  }
 }
 function drawPrediction(){
